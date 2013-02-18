@@ -15,7 +15,7 @@ author :
   name : Zhang Jun
   email : zhangjunhd@gmail.com
   github : zhangjunhd
-  twitter : username
+  #twitter : username
   feedburner : feedname
 
 # The production_url is only used when full-domain names are needed
