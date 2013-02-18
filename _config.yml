@@ -9,14 +9,14 @@ pygments: true
 # Themes are encouraged to use these universal variables 
 # so be sure to set them if your theme uses them.
 #
-title : J's Blog
-tagline: Site Tagline
+title : 子孑的博客
+tagline: Site Tagline(What's this???)
 author :
-  name : Zhang Jun
+  name : Zhang Jun(子孑)
   email : zhangjunhd@gmail.com
   github : zhangjunhd
-  #twitter : username
-  feedburner : feedname
+  twitter : username
+  feedburner : username
 
 # The production_url is only used when full-domain names are needed
 # such as sitemap.txt 
