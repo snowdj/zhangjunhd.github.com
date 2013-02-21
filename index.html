@@ -1,0 +1,75 @@
+---
+layout: index
+title: "J's Blog"
+description: "子孑(zhangjunhd)的博客首页"
+keywords: "思考，阅读，音乐，咖啡，旅游，云计算，大数据"
+---
+{% include JB/setup %}
+
+
+
+
+<div id="content">
+    <article id="post_list">
+      {% for post in paginator.posts %}
+        <section class="post">
+          <h2><a href="{{ BASE_PATH }}{{ post.url }}" class="title">{{ post.title }}</a></h2>
+          <small class="meta">{{ post.date | date: "%m - %d - %Y" }}</small>
+        <div class="content">
+        {{ post.content  | | split:'<!--break-->' | first}}
+        
+        
+        </div>
+        <!-- 标签 -->
+        <ul class="tag_box inline">
+      		{% assign tags_list = post.tags %}
+      		{% include JB/tags_list %}
+      	</ul>
+        <br/>
+      	<!-- readmore按钮 -->
+        <p class="preadmore"><a href="{{ BASE_PATH }}{{ post.url }}" alt="Read More" class="readmore"><span>&#10149;</span>阅读全文</a></p>
+         
+        </section>
+      {% endfor %}
+    </article>
+</div>
+
+<!--分页器-->
+<div id="pagination">
+  <div class="pagenavi">
+  <span class="page_number">第{{paginator.page}}页/共{{paginator.total_pages}}页</span>
+  <!--暂时先把第一页给注释掉-->
+  <!--a href="/">第一页</a-->
+  {% if paginator.previous_page %}
+    {% if paginator.previous_page == 1 %}
+      <a href="/" class="current">前一页</a>
+    {% else %}
+      <a href="/page{{paginator.previous_page}}">前一页</a>
+    {% endif %}
+    {% else %}
+      <span>前一页</span>
+  {% endif %}
+
+  {% for count in (1..paginator.total_pages) limit:8 %}
+    {% if count == paginator.page %}
+      <span class="current-page">{{count}}</span>
+    {% else %}
+      <a href="/page{{count}}">{{count}}</a>
+    {% endif %}
+  {% endfor %}
+
+  {% if paginator.next_page %}
+    <a href="/page{{paginator.next_page}}">后一页</a>
+  {% else %}
+    <span>后一页</span>
+  {% endif %}
+    <!--暂时先把最后一页给注释掉-->
+    <!--a href="/page{{paginator.total_pages}}">最后一页</a-->
+  </div>
+</div>
+
+<script type="text/javascript">
+  showCurrentItem(document.getElementById("menu-item-index"));
+</script>
+
+

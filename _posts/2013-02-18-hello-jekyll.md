@@ -3,7 +3,7 @@ layout: post
 title: "Hello jekyll"
 description: "本文介绍基于jekyll+markdown+git+github快速搭建blog的入门方法，以及自己对此的一些认识和相关资料的官方文档。"
 keywords: "jekyll,markdown,github"
-category: lessons
+category: tech
 tags: [jekyll, markdown]
 ---
 {% include JB/setup %}

@@ -6,9 +6,18 @@ exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md"]
 auto: true
 pygments: true
 
+# 每一页显示的文章数
+paginate: 5
+
 # Themes are encouraged to use these universal variables 
 # so be sure to set them if your theme uses them.
 #
+# set for rss
+name: J's blog
+description: Keep matters in suspense
+url: http://zhangjunhd.github.com
+
+
 title : 子孑的博客
 tagline: Site Tagline(What's this???)
 author :
