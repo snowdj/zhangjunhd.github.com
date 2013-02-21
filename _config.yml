@@ -12,7 +12,7 @@ pygments: true
 title : 子孑的博客
 tagline: Site Tagline(What's this???)
 author :
-  name : Zhang Jun(子孑)
+  name : zhangjunhd(子孑)
   email : zhangjunhd@gmail.com
   github : zhangjunhd
   twitter : username
@@ -81,7 +81,7 @@ JB :
   comments :
     provider : disqus
     disqus :
-      short_name : jekyllbootstrap
+      short_name : zhangjunhd
     livefyre :
       site_id : 123
     intensedebate :
