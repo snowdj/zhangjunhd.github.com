@@ -1,5 +1,5 @@
 ---
-layout: index
+layout: page
 title: "J's 生活志"
 description: "子孑的生活志"
 keywords: "子孑，生活志"

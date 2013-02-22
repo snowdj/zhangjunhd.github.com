@@ -1,5 +1,5 @@
 ---
-layout: index
+layout: page
 title: "J's 技术贴"
 description: 子孑的技术贴"
 keywords: "子孑，技术贴，互联网"

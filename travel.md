@@ -1,5 +1,5 @@
 ---
-layout: index
+layout: page
 title: "J's 走走停停"
 description: "子孑的走走停停"
 keywords: "子孑，走走停停，旅行"
