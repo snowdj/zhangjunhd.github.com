@@ -66,6 +66,8 @@ tags: [jekyll, markdown]
 		$ git commit -m "Add new content"
 		$ git push origin master
 	这样就可以通过*USERNAME*.github.com访问了。
+	
+	这里还有一点要注意，在编辑layout页面时，会使用到[YAML][16]解析，如果你使用的文本编辑器会对Unicode编码加入[BOM][17],会导致YMAL解析失效。
 
  3. 其他相关的资料。 
 *   如果你选择托管在github上，但是想绑定自己的域名，那么请参考[GitHub Pages][9]。
@@ -92,3 +94,5 @@ tags: [jekyll, markdown]
 [13]: http://mouapp.com/ 
 [14]: http://jekyllbootstrap.com/usage/index.html "jekyll入门介绍"
 [15]: https://github.com/mojombo/jekyll/wiki/Blog-Migrations "关于blog的迁移"
+[16]: https://github.com/mojombo/jekyll/wiki/yaml-front-matter "YAML Front Matter"
+[17]: http://www.w3.org/International/questions/qa-utf8-bom "The byte-order mark (BOM) in HTML"
