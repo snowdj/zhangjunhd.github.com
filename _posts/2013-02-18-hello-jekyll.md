@@ -69,14 +69,15 @@ tags: [jekyll, markdown]
 	
 	这里还有一点要注意，在编辑layout页面时，会使用到[YAML][16]解析，如果你使用的文本编辑器会对Unicode编码加入[BOM][17],会导致YMAL解析失效。
 
- 3. 其他相关的资料。 
-*   如果你选择托管在github上，但是想绑定自己的域名，那么请参考[GitHub Pages][9]。
-*   如果你想部署到自己的VPS,也很方便，可以参考[Deployment][10]。
-*   如果你想参考其他利用jekyll搭建的网站，可以参考[Site List][11]。
-*   如果你想了解下markdown，可以参考下[markdown语法说明][12]。
-*   如果你想在mac下找一款除了VIM其他的支持markdown语法的文本编辑器，你可以试试[Mou][13]。
-*   如果你想把以前的blog迁移过来，可以参考[blog migrations][15]。
-*   更多的关于jekyll的使用和介绍，可以参考[start blogging][14]。
+3. 其他相关的资料。 
+
+    - 如果你选择托管在github上，但是想绑定自己的域名，那么请参考[GitHub Pages][9]。
+    - 如果你想部署到自己的VPS,也很方便，可以参考[Deployment][10]。
+    - 如果你想参考其他利用jekyll搭建的网站，可以参考[Site List][11]。
+    - 如果你想了解下markdown，可以参考下[markdown语法说明][12]。
+    - 如果你想在mac下找一款除了VIM其他的支持markdown语法的文本编辑器，你可以试试[Mou][13]。
+    - 如果你想把以前的blog迁移过来，可以参考[blog migrations][15]。
+    - 更多的关于jekyll的使用和介绍，可以参考[start blogging][14]。
 		
 
 [1]: http://jekyllrb.com/ "jekyll官网"
