@@ -16,24 +16,26 @@ tags: [hadoop, ambari, flume, HDFS, MapReduce, HBase]
 - [HDFS][5] Distributed redundant filesystem for Hadoop
 - [HBase][3]:Column-oriented database scaling to billions of rows
 
+<!--break-->
+
 ##Ambari
 Apache Ambari is a web-based tool for provisioning, managing, and monitoring Apache Hadoop clusters.
 
 1. High level architecture of Ambari  
-<img src="attachment/2013-02-24-apache-related-projects/high_level_arch.png" alt="Ambari architecture"/>
+![Ambari architecture](http://s5.sinaimg.cn/middle/4af26851td677808c0844&690)
 
 2. Design of Ambari Agent
-<img src="attachment/2013-02-24-apache-related-projects/agent_arch.png" alt="Ambari agent design"/>
+![Ambari agent design](http://s12.sinaimg.cn/middle/4af26851t7bd8c00d4d2b&690)
 
 3. Design of Ambari Server
-<img src="attachment/2013-02-24-apache-related-projects/server_arch.png" alt="Ambari server design"/>
+![Ambari server design](http://s12.sinaimg.cn/middle/4af26851td67780a6788b&690)
 
 ##Flume
 Apache Flume is a distributed, reliable, and available system for efficiently collecting, aggregating and moving large amounts of log data from many different sources to a centralized data store.
  
 An `Event` is a unit of data that flows through a Flume agent. A `Source` consumes `Event`s having a specific format, and those Events are delivered to the `Source` by an external source like a web server. When a `Source` receives an `Event`, it stores it into one or more `Channel`s. The `Channel` is a passive store that holds the `Event` until that `Event` is consumed by a `Sink`. A `Sink` is responsible for removing an `Event` from the `Channel` and putting it into an external repository like HDFS or forwarding it to the Source at the next hop of the flow. The `Source` and `Sink` within the given agent run asynchronously with the `Event`s staged in the `Channel`.
 
-<img src="http://flume.apache.org/_images/DevGuide_image00.png" alt="Flume data flow model"/>
+![Flume data flow model](http://flume.apache.org/_images/DevGuide_image00.png)
 
 ##MapReduce
 1. Programming Model 
@@ -47,21 +49,21 @@ An `Event` is a unit of data that flows through a Flume agent. A `Source` consum
 
 		    reduce (out_key, list(intermediate_value)) -> list(out_value)
 2. Execution
-<img src="http://research.google.com/archive/mapreduce-osdi04-slides/index-auto-0007-0001.gif" alt="Map reduce execution"/>
+![Map reduce execution](http://research.google.com/archive/mapreduce-osdi04-slides/index-auto-0007-0001.gif)
 
 3. Parallel Execution
    - A separate user-defined `Combiner` function can be specified to perform partial combining of values associated with a given key during the Map phase. Each Map worker will keep a cache of key/value pairs that have been emitted from the Mapper, and strive to combine locally as much as possible before sending the combined key/value pairs on to the Shuffle phase.
    - A user-defined `Sharder` function can be specified that selects which Reduce worker machine should receive the group for a given key. A user-defined Sharder can be used to aid in load balancing. It also can be used to sort the output keys into Reduce “buckets,” with all the keys of the ith Reduce worker being ordered before all the keys of the i + 1st Reduce worker. Since each Reduce worker processes keys in lexicographic order, this kind of Sharder can be used to produce sorted output.
-<img src="http://research.google.com/archive/mapreduce-osdi04-slides/index-auto-0008-0001.gif" alt="Map reduce parallel execution"/>
+![Map reduce parallel execution](http://research.google.com/archive/mapreduce-osdi04-slides/index-auto-0008-0001.gif)
 
 ##HDFS
 1. NameNode and DataNodes  
 HDFS has a master/slave architecture. An HDFS cluster consists of a single `NameNode`, a master server that manages the file system namespace and regulates access to files by clients. In addition, there are a number of `DataNode`s, usually one per node in the cluster, which manage storage attached to the nodes that they run on. 
-<img src="http://hadoop.apache.org/docs/r1.1.1/images/hdfsarchitecture.gif" alt="HDFS arch"/>
+![HDFS arch](http://hadoop.apache.org/docs/r1.1.1/images/hdfsarchitecture.gif)
 
 2. Data Replication  
 HDFS is designed to reliably store very large files across machines in a large cluster. It stores each file as a sequence of `block`s; all blocks in a file except the last block are the same size. The blocks of a file are replicated for fault tolerance.
-<img src="http://hadoop.apache.org/docs/r1.1.1/images/hdfsdatanodes.gif" alt="HDFS datanodes"/>
+![HDFS datanodes](http://hadoop.apache.org/docs/r1.1.1/images/hdfsdatanodes.gif)
 
     For the common case, when the replication factor is three, __HDFS’s placement policy is to put one replica on one node in the local rack, another on a node in a different (remote) rack, and the last on a different node in the same remote rack.__ This policy cuts the inter-rack write traffic which generally improves write performance. The chance of rack failure is far less than that of node failure; this policy does not impact data reliability and availability guarantees. However, it does reduce the aggregate network bandwidth used when reading data since a block is placed in only two unique racks rather than three. __With this policy, the replicas of a file do not evenly distribute across the racks. One third of replicas are on one node, two thirds of replicas are on one rack, and the other third are evenly distributed across the remaining racks.__ This policy improves write performance without compromising data reliability or read performance.
 
@@ -85,13 +87,13 @@ HDFS is designed to reliably store very large files across machines in a large c
     4.2 Cluster Rebalancing  
     The HDFS architecture is compatible with data `rebalancing` schemes. A scheme might automatically move data from one DataNode to another if the free space on a DataNode falls below a certain threshold.
 
-    4.3 Data Integrity
+    4.3 Data Integrity  
     When a client creates an HDFS file, it computes a `checksum` __of each block__ of the file and stores these checksums in a separate hidden file in the same HDFS namespace. When a client retrieves file contents it verifies that the data it received from each DataNode matches the checksum stored in the associated checksum file. If not, then the client can opt to retrieve that block from another DataNode that has a replica of that block.
 
-    4.4 Metadata Disk Failure
+    4.4 Metadata Disk Failure  
     NameNode can be configured to support maintaining multiple copies of the FsImage and EditLog. Any update to either the FsImage or EditLog causes each of the FsImages and EditLogs to get updated __synchronously__.
 
-    4.5 Snapshots
+    4.5 Snapshots  
     Snapshots support storing a copy of data at a particular instant of time. One usage of the snapshot feature may be to roll back a corrupted HDFS instance to a previously known good point in time.
 
 5. Data Organization  
