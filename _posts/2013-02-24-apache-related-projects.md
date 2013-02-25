@@ -22,13 +22,13 @@ tags: [hadoop, ambari, flume, HDFS, MapReduce, HBase]
 Apache Ambari is a web-based tool for provisioning, managing, and monitoring Apache Hadoop clusters.
 
 1. High level architecture of Ambari  
-![Ambari architecture](http://s5.sinaimg.cn/middle/4af26851td677808c0844&690)
+![Ambari architecture](/assets/2013-02-24-apache-related-project/high_level_arch.png)
 
 2. Design of Ambari Agent
-![Ambari agent design](http://s12.sinaimg.cn/middle/4af26851t7bd8c00d4d2b&690)
+![Ambari agent design](/assets/2013-02-24-apache-related-project/agent_arch.png)
 
 3. Design of Ambari Server
-![Ambari server design](http://s12.sinaimg.cn/middle/4af26851td67780a6788b&690)
+![Ambari server design](/assets/2013-02-24-apache-related-project/server_arch.jpeg)
 
 ##Flume
 Apache Flume is a distributed, reliable, and available system for efficiently collecting, aggregating and moving large amounts of log data from many different sources to a centralized data store.
@@ -71,8 +71,7 @@ HDFS is designed to reliably store very large files across machines in a large c
 
     On startup, the NameNode enters a special state called `Safemode`. Replication of data blocks does not occur when the NameNode is in the Safemode state. The NameNode receives Heartbeat and Blockreport messages from the DataNodes. A Blockreport contains the list of data blocks that a DataNode is hosting. Each block has a specified minimum number of replicas. A block is considered safely replicated when the minimum number of replicas of that data block has checked in with the NameNode. After a configurable percentage of safely replicated data blocks checks in with the NameNode (plus an additional 30 seconds), the NameNode exits the Safemode state.
 
-3. The Persistence of File System Metadata
-
+3. The Persistence of File System Metadata  
    The NameNode uses a transaction log called the `EditLog` to persistently record every change that occurs to file system metadata. The NameNode uses a file in its local host OS file system to store the EditLog.
 
    The entire file system namespace, including the mapping of blocks to files and file system properties, is stored in a file called the `FsImage`. The FsImage is stored as a file in the NameNode’s local file system too.
