@@ -2,9 +2,8 @@
 layout: post
 title: "Apache Hadoop-Related Projects Design Architecture"
 description: ""
-keywords: ""
 category: tech
-tags: [hadoop, ambari, flume, HDFS, MapReduce, HBase]
+tags: [hadoop, ambari, flume, HDFS, MapReduce]
 ---
 {% include JB/setup %}
 
@@ -14,7 +13,7 @@ tags: [hadoop, ambari, flume, HDFS, MapReduce, HBase]
 - [Flume][2]:Collection and import of log and event data
 - [MapReduce][4]: Parallel computation on server clusters
 - [HDFS][5] Distributed redundant filesystem for Hadoop
-- [HBase][3]:Column-oriented database scaling to billions of rows
+- [HBase][3]:Column-oriented database scaling to billions of rows, see [part2][10]
 
 <!--break-->
 
@@ -38,31 +37,31 @@ An `Event` is a unit of data that flows through a Flume agent. A `Source` consum
 ![Flume data flow model](http://flume.apache.org/_images/DevGuide_image00.png)
 
 ##MapReduce
-1. Programming Model 
-
-   - The `Map` phase starts by reading a collection of values or key/value pairs from an input source. It then invokes a user-defined function, the `Mapper`, on each element, independently and in parallel.
+1. Programming Model  
+   The `Map` phase starts by reading a collection of values or key/value pairs from an input source. It then invokes a user-defined function, the `Mapper`, on each element, independently and in parallel.
 			    
 		     map (in_key, in_value) -> list(out_key, intermediate_value)
-
-   - The `Shuffle` phase takes the key/value pairs emitted by the Mappers and groups together all the key/value pairs with the same key. It then outputs each distinct key and a stream of all the values with that key to the next phase.
-   - The `Reduce` phase takes the key-grouped data emitted by the Shuffle phase and invokes a user-defined function, the `Reducer`, on each distinct key-and-values group, independently and in parallel.  
+    The `Shuffle` phase takes the key/value pairs emitted by the Mappers and groups together all the key/value pairs with the same key. It then outputs each distinct key and a stream of all the value   - th that key to the next phase.  
+    
+    The `Reduce` phase takes the key-grouped data emitted by the Shuffle phase and invokes a user-defined function, the `Reducer`, on each distinct key-and-values group, independently and in parallel.  
 
 		    reduce (out_key, list(intermediate_value)) -> list(out_value)
 2. Execution
 ![Map reduce execution](http://research.google.com/archive/mapreduce-osdi04-slides/index-auto-0007-0001.gif)
 
-3. Parallel Execution
-   - A separate user-defined `Combiner` function can be specified to perform partial combining of values associated with a given key during the Map phase. Each Map worker will keep a cache of key/value pairs that have been emitted from the Mapper, and strive to combine locally as much as possible before sending the combined key/value pairs on to the Shuffle phase.
-   - A user-defined `Sharder` function can be specified that selects which Reduce worker machine should receive the group for a given key. A user-defined Sharder can be used to aid in load balancing. It also can be used to sort the output keys into Reduce “buckets,” with all the keys of the ith Reduce worker being ordered before all the keys of the i + 1st Reduce worker. Since each Reduce worker processes keys in lexicographic order, this kind of Sharder can be used to produce sorted output.
+3. Parallel Execution  
+    A separate user-defined `Combiner` function can be specified to perform partial combining of values associated with a given key during the Map phase. Each Map worker will keep a cache of key/value pairs that have been emitted from the Mapper, and strive to combine locally as much as possible before sending the combined key/value pairs on to the Shuffle phase.  
+    
+    A user-defined `Sharder` function can be specified that selects which Reduce worker machine should receive the group for a given key. A user-defined Sharder can be used to aid in load balancing. It also can be used to sort the output keys into Reduce “buckets,” with all the keys of the ith Reduce worker being ordered before all the keys of the i + 1st Reduce worker. Since each Reduce worker processes keys in lexicographic order, this kind of Sharder can be used to produce sorted output.
 ![Map reduce parallel execution](http://research.google.com/archive/mapreduce-osdi04-slides/index-auto-0008-0001.gif)
 
 ##HDFS
 1. NameNode and DataNodes  
-HDFS has a master/slave architecture. An HDFS cluster consists of a single `NameNode`, a master server that manages the file system namespace and regulates access to files by clients. In addition, there are a number of `DataNode`s, usually one per node in the cluster, which manage storage attached to the nodes that they run on. 
+    HDFS has a master/slave architecture. An HDFS cluster consists of a single `NameNode`, a master server that manages the file system namespace and regulates access to files by clients. In addition, there are a number of `DataNode`s, usually one per node in the cluster, which manage storage attached to the nodes that they run on. 
 ![HDFS arch](http://hadoop.apache.org/docs/r1.1.1/images/hdfsarchitecture.gif)
 
 2. Data Replication  
-HDFS is designed to reliably store very large files across machines in a large cluster. It stores each file as a sequence of `block`s; all blocks in a file except the last block are the same size. The blocks of a file are replicated for fault tolerance.
+    HDFS is designed to reliably store very large files across machines in a large cluster. It stores each file as a sequence of `block`s; all blocks in a file except the last block are the same size. The blocks of a file are replicated for fault tolerance.
 ![HDFS datanodes](http://hadoop.apache.org/docs/r1.1.1/images/hdfsdatanodes.gif)
 
     For the common case, when the replication factor is three, __HDFS’s placement policy is to put one replica on one node in the local rack, another on a node in a different (remote) rack, and the last on a different node in the same remote rack.__ This policy cuts the inter-rack write traffic which generally improves write performance. The chance of rack failure is far less than that of node failure; this policy does not impact data reliability and availability guarantees. However, it does reduce the aggregate network bandwidth used when reading data since a block is placed in only two unique racks rather than three. __With this policy, the replicas of a file do not evenly distribute across the racks. One third of replicas are on one node, two thirds of replicas are on one rack, and the other third are evenly distributed across the remaining racks.__ This policy improves write performance without compromising data reliability or read performance.
@@ -113,13 +112,9 @@ HDFS is designed to reliably store very large files across machines in a large c
     When the replication factor of a file is reduced, the NameNode selects excess replicas that can be deleted. The next Heartbeat transfers this information to the DataNode. The DataNode then removes the corresponding blocks and the corresponding free space appears in the cluster.
 
 
-
-##HBase
-TODO
-
-
 [1]:http://incubator.apache.org/ambari/ "Apache Ambari"
 [2]:http://flume.apache.org/ "Apache Flume"
 [3]:http://hbase.apache.org/ "Apache Hbase"
 [4]:http://wiki.apache.org/hadoop/MapReduce "Apache MapReduce"
-[5]:http://hadoop.apache.org/docs/r1.1.1/hdfs_design.html "HDFS Architecture Guide"
+[5]:http://hadoop.apache.org/docs/r1.1.1/hdfs_desig5.html "HDFS Architecture Guide"
+[10]:http://zhangjunhd.github.com/2013/02/25/apache-hbase/
