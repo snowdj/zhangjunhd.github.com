@@ -24,10 +24,11 @@
 	{% endif %}
 
    <!-- Custom JS-->
-   <script type="text/javascript" src="/assets/custom/js/jquery.js"></script>
-   <script type="text/javascript" src="/assets/custom/js/jquery-ui.js"></script>
-   <script type="text/javascript" src="/assets/custom/js/custom.js"></script>
-  
+  <script type="text/javascript" src="/assets/custom/js/jquery.js"></script>
+  <script type="text/javascript" src="/assets/custom/js/jquery-ui.js"></script>
+  <script type="text/javascript" src="/assets/custom/js/site-search.js"></script>
+  <script type="text/javascript" src="/assets/custom/js/custom.js"></script>
+
    <!-- Custom CSS-->
    <link rel="stylesheet" href="/assets/custom/css/screen.css" type="text/css" />
    <link rel="stylesheet" href="/assets/custom/css/jquery-ui.css" type="text/css" />
@@ -57,23 +58,25 @@
     </ul>
   </nav>
 
+
+
     <div id="toolbar">
-        <div id="rss"><a href="http://feed.feedsky.com/zhangjunhd" title="RSS Feed">RSS</a></div>
-        <script src="http://s25.cnzz.com/stat.php?id=5060964&web_id=5060964&show=pic" language="JavaScript"></script>
-        <div id="searchFrom">
-            <form method="get" action="http://www.google.com/search" target="google_window">
-		    <label class="hidden" for="s">Search...</label>
-		    <div>	
-		        <input type="text" value="Search..." name="q" onfocus="if (this.value == 'Search...') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search...';}">
-                <button type="submit" >Search</button>
-			</div>
-			<input type="hidden" name="ie" value="UTF-8" />
-			<input type="hidden" name="oe" value="UTF-8" />
-			<input type="hidden" name="hl" value="zh-CN" />
-			<input type="hidden" name="domains" value="http://zhangjunhd.github.com" />
-			<input type="hidden" name="sitesearch" value="http://zhangjunhd.github.com" />
-			</form>
-        </div>
+      <div id="rss"><a href="http://feed.feedsky.com/zhangjunhd" title="RSS Feed">RSS</a></div>
+      <div>
+              
+          <script>
+            (function() {
+                var cx = '007121311338869171090:by_rz7luxnw';
+                var gcse = document.createElement('script'); gcse.type = 'text/javascript';
+                gcse.async = true;
+                gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                    '//www.google.com/cse/cse.js?cx=' + cx;
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(gcse, s);
+            })();
+            </script>
+            <gcse:search></gcse:search>
+      </div>
     </div>
  
 

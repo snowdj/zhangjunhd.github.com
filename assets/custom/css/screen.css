@@ -26,6 +26,7 @@ input[type^="radio"] {border:none; background:none; width:auto;}
 #sublogo {text-align: left;}
 #header h2 {font-size:14px;}
 #toolbar {height:24px; font-size:12px;}
+
 #searchFrom {background:#fafafa; border:1px solid #ccc; border-radius:15px; box-shadow:inset 1px 1px 5px rgba(100,100,100,.3); padding:3px 5px; height:16px; float:right;}
 #searchFrom label {display:none;}
 #searchFrom input {border:none; background:none; box-shadow:none; width:150px; height:16px; line-height:16px; vertical-align:top;}
