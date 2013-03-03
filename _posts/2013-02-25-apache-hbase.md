@@ -15,6 +15,7 @@ tags: [hadoop, HBase]
 - [HDFS][5] Distributed redundant filesystem for Hadoop, see [part1][10]
 - [HBase][3]:Column-oriented database scaling to billions of rows
 - [Zookeeper][6]:Configuration management and coordination, see [part3][11]
+- [Pig][7]:High-level programming language for Hadoop computations, see [part4][12]
 
 <!--break-->
 
@@ -96,6 +97,7 @@ tags: [hadoop, HBase]
 [4]:http://wiki.apache.org/hadoop/MapReduce "Apache MapReduce"
 [5]:http://hadoop.apache.org/docs/r1.1.1/hdfs_design.html "HDFS Architecture Guide"
 [6]:http://zookeeper.apache.org/ "Apache Zookeeper"
+[7]:http://pig.apache.org/ "Apache Pig"
 [10]:http://zhangjunhd.github.com/2013/02/24/apache-related-projects/
 [11]:http://zhangjunhd.github.com/2013/03/01/zookeeper/
-
+[12]:http://zhangjunhd.github.com/2013/03/03/pig/

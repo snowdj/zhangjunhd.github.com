@@ -15,6 +15,7 @@ tags: [hadoop, ambari, flume, HDFS, MapReduce]
 - [HDFS][5] Distributed redundant filesystem for Hadoop
 - [HBase][3]:Column-oriented database scaling to billions of rows, see [part2][10]
 - [Zookeeper][6]:Configuration management and coordination, see [part3][11]
+- [Pig][7]:High-level programming language for Hadoop computations, see [part4][12]
 
 <!--break-->
 
@@ -119,5 +120,7 @@ An `Event` is a unit of data that flows through a Flume agent. A `Source` consum
 [4]:http://wiki.apache.org/hadoop/MapReduce "Apache MapReduce"
 [5]:http://hadoop.apache.org/docs/r1.1.1/hdfs_desig5.html "HDFS Architecture Guide"
 [6]:http://zookeeper.apache.org/ "Apache Zookeeper"
+[7]:http://pig.apache.org/ "Apache Pig"
 [10]:http://zhangjunhd.github.com/2013/02/25/apache-hbase/
 [11]:http://zhangjunhd.github.com/2013/03/01/zookeeper/
+[12]:http://zhangjunhd.github.com/2013/03/03/pig/
