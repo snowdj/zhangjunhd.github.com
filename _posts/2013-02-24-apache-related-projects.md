@@ -19,6 +19,9 @@ tags: [hadoop, ambari, flume, HDFS, MapReduce]
 - [Hive][8]: Data warehouse with SQL-like access, see [part7][25]
 - [Oozie][9]: Orchestration and workflow management, see [part6][24]
 - [Sqoop][10]: Imports data from relational databases, see [part7][25]
+- [HCatalog][11]: Schema and data type sharing over Pig, Hive and MapReduce, see [part8][26]
+- [Whirr][12]: Cloud-agnostic deployment of clusters, see [part8][26]
+- [Mahout][13]: Library of machine learning and data mining algorithms, see [part8][26]
 
 <!--break-->
 
@@ -127,6 +130,9 @@ An `Event` is a unit of data that flows through a Flume agent. A `Source` consum
 [8]:http://hive.apache.org/ "Apache Hive"
 [9]:http://oozie.apache.org/ "Apache Oozie"
 [10]:http://sqoop.apache.org/ "Apache Sqoop"
+[11]:http://incubator.apache.org/hcatalog/ "Apache Hcatalog"
+[12]:http://whirr.apache.org/ "Apache whirr"
+[13]:http://mahout.apache.org/ "Apache Mahout"
 
 [20]:http://zhangjunhd.github.com/2013/02/24/apache-related-projects/
 [21]:http://zhangjunhd.github.com/2013/02/25/apache-hbase/
@@ -134,3 +140,4 @@ An `Event` is a unit of data that flows through a Flume agent. A `Source` consum
 [23]:http://zhangjunhd.github.com/2013/03/03/pig/
 [24]:http://zhangjunhd.github.com/2013/03/04/oozie/
 [25]:http://zhangjunhd.github.com/2013/03/04/hive/
+[26]:http://zhangjunhd.github.com/2013/03/06/apache-related-projects2/
