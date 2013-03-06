@@ -13,9 +13,12 @@ tags: [hadoop, ambari, flume, HDFS, MapReduce]
 - [Flume][2]:Collection and import of log and event data
 - [MapReduce][4]: Parallel computation on server clusters
 - [HDFS][5] Distributed redundant filesystem for Hadoop
-- [HBase][3]:Column-oriented database scaling to billions of rows, see [part2][10]
-- [Zookeeper][6]:Configuration management and coordination, see [part3][11]
-- [Pig][7]:High-level programming language for Hadoop computations, see [part4][12]
+- [HBase][3]:Column-oriented database scaling to billions of rows, see [part2][21]
+- [Zookeeper][6]:Configuration management and coordination, see [part3][22]
+- [Pig][7]:High-level programming language for Hadoop computations, see [part4][23]
+- [Hive][8]: Data warehouse with SQL-like access, see [part7][25]
+- [Oozie][9]: Orchestration and workflow management, see [part6][24]
+- [Sqoop][10]: Imports data from relational databases, see [part7][25]
 
 <!--break-->
 
@@ -121,6 +124,13 @@ An `Event` is a unit of data that flows through a Flume agent. A `Source` consum
 [5]:http://hadoop.apache.org/docs/r1.1.1/hdfs_desig5.html "HDFS Architecture Guide"
 [6]:http://zookeeper.apache.org/ "Apache Zookeeper"
 [7]:http://pig.apache.org/ "Apache Pig"
-[10]:http://zhangjunhd.github.com/2013/02/25/apache-hbase/
-[11]:http://zhangjunhd.github.com/2013/03/01/zookeeper/
-[12]:http://zhangjunhd.github.com/2013/03/03/pig/
+[8]:http://hive.apache.org/ "Apache Hive"
+[9]:http://oozie.apache.org/ "Apache Oozie"
+[10]:http://sqoop.apache.org/ "Apache Sqoop"
+
+[20]:http://zhangjunhd.github.com/2013/02/24/apache-related-projects/
+[21]:http://zhangjunhd.github.com/2013/02/25/apache-hbase/
+[22]:http://zhangjunhd.github.com/2013/03/01/zookeeper/
+[23]:http://zhangjunhd.github.com/2013/03/03/pig/
+[24]:http://zhangjunhd.github.com/2013/03/04/oozie/
+[25]:http://zhangjunhd.github.com/2013/03/04/hive/

@@ -7,13 +7,16 @@ tags: [zookeeper, zab]
 ---
 {% include JB/setup %}
 
-- [Ambari][1] : Deployment, configuration and monitoring, see [part1][10]
-- [Flume][2]:Collection and import of log and event data, see [part1][10]
-- [MapReduce][4]: Parallel computation on server clusters, see [part1][10]
-- [HDFS][5] Distributed redundant filesystem for Hadoop, see [part1][10]
-- [HBase][3]:Column-oriented database scaling to billions of rows, see [part2][11]
+- [Ambari][1] : Deployment, configuration and monitoring, see [part1][20]
+- [Flume][2]:Collection and import of log and event data, see [part1][20]
+- [MapReduce][4]: Parallel computation on server clusters, see [part1][20]
+- [HDFS][5] Distributed redundant filesystem for Hadoop, see [part1][20]
+- [HBase][3]:Column-oriented database scaling to billions of rows, see [part2][21]
 - [Zookeeper][6]:Configuration management and coordination
-- [Pig][7]:High-level programming language for Hadoop computations, see [part4][12]
+- [Pig][7]:High-level programming language for Hadoop computations, see [part4][23]
+- [Hive][8]: Data warehouse with SQL-like access, see [part7][25]
+- [Oozie][9]: Orchestration and workflow management, see [part6][24]
+- [Sqoop][10]: Imports data from relational databases, see [part7][25]
 
 <!--break-->
 
@@ -142,7 +145,7 @@ Every ZooKeeper server services clients. Clients connect to exactly one server t
 ![zk](/assets/2013-03-01-zookeeper/zk.png)
 
 __Atomic Broadcast__  
-All requests that update ZooKeeper state are forwarded to the leader. The leader executes the request and broadcasts the change to the ZooKeeper state through [Zab][20], an atomic broadcast protocol. The server that receives the client request responds to the client when it delivers the corresponding state change.
+All requests that update ZooKeeper state are forwarded to the leader. The leader executes the request and broadcasts the change to the ZooKeeper state through [Zab][30], an atomic broadcast protocol. The server that receives the client request responds to the client when it delivers the corresponding state change.
 
 __Replicated Database__  
 Each replica has a copy in memory of the ZooKeeper state. When a ZooKeeper server recovers from a crash, it needs to recover this internal state. Replaying all delivered messages to recover state would take prohibitively long after running the server for a while, so ZooKeeper uses periodic snapshots and only requires redelivery of messages since the start of the snapshot. We call ZooKeeper snapshots `fuzzy snapshots` since we do not lock the ZooKeeper state to take the snapshot; instead, we do a depth first scan of the tree atomically reading each znode’s data and meta-data and writing them to disk. Since the resulting fuzzy snapshot may have applied some subset of the state changes delivered during the generation of the snapshot, the result may not correspond to the state of ZooKeeper at any point in time. However, since state changes are `idempotent`, we can apply them twice as long as we apply the state changes in order.
@@ -166,7 +169,15 @@ To detect client session failures, ZooKeeper uses timeouts. The leader determine
 [5]:http://hadoop.apache.org/docs/r1.1.1/hdfs_design.html "HDFS Architecture Guide"
 [6]:http://zookeeper.apache.org/ "Apache Zookeeper"
 [7]:http://pig.apache.org/ "Apache Pig"
-[10]:http://zhangjunhd.github.com/2013/02/24/apache-related-projects/
-[11]:http://zhangjunhd.github.com/2013/02/25/apache-hbase/
-[12]:http://zhangjunhd.github.com/2013/03/03/pig/
-[20]:http://zhangjunhd.github.com/2013/02/28/zab/
+[8]:http://hive.apache.org/ "Apache Hive"
+[9]:http://oozie.apache.org/ "Apache Oozie"
+[10]:http://sqoop.apache.org/ "Apache Sqoop"
+
+[20]:http://zhangjunhd.github.com/2013/02/24/apache-related-projects/
+[21]:http://zhangjunhd.github.com/2013/02/25/apache-hbase/
+[22]:http://zhangjunhd.github.com/2013/03/01/zookeeper/
+[23]:http://zhangjunhd.github.com/2013/03/03/pig/
+[24]:http://zhangjunhd.github.com/2013/03/04/oozie/
+[25]:http://zhangjunhd.github.com/2013/03/04/hive/
+
+[30]:http://zhangjunhd.github.com/2013/02/28/zab/
