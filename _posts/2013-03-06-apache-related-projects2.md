@@ -34,7 +34,8 @@ __First__ Joe in data acquisition uses distcp to get data onto the grid.
 
     hadoop distcp file:///file.dat hdfs://data/rawevents/20100819/data
 
-    hcat "alter table rawevents add partition (ds='20100819') location 'hdfs://data/rawevents/20100819/data'"
+    hcat "alter table rawevents add partition (ds='20100819') location 'hdfs://data/
+    rawevents/20100819/data'"
 
 __Second__ Sally in data processing uses Pig to cleanse and prepare the data.
 
@@ -56,7 +57,8 @@ __Third__ Robert in client management uses Hive to analyze his clients' results.
 
 Without HCatalog, Robert must alter the table to add the required partition.
 
-    alter table processedevents add partition 20100819 hdfs://data/processedevents/20100819/data
+    alter table processedevents add partition 20100819 hdfs://data/processedevents/
+    20100819/data
 
     select advertiser_id, count(clicks)
     from processedevents
@@ -102,8 +104,8 @@ __Example:Flume Service__(a service for collecting and moving large amounts of d
             public String getRole() { return ROLE; }
   
             @Override
-            protected void beforeBootstrap(ClusterActionEvent event) throws IOException,
-                InterruptedException {
+            protected void beforeBootstrap(ClusterActionEvent event) throws
+                IOException, InterruptedException {
                 addStatement(event, call("install_java"));
                 addStatement(event, call("install_flumedemo"));
             }
