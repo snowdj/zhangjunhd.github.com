@@ -1,6 +1,14 @@
 body,h1,h2,h3,p,blockquote,dl,dt,dd,ul,ol,li,button,input,textarea {margin: 0; padding: 0;}
 header,footer,article,section,nav,menu {display:block;}
 body {font-family:"Hiragino Sans GB","Microsoft Yahei",Tahoma, Helvetica, Arial, "SimSun", sans-serif; line-height:1.6; background:#1a1a1a url(/assets/custom/photos/bg.png) repeat;}
+body div.content {}
+    body div.content code.has-jax {
+        font: inherit;
+        font-size: 100%;
+        background: inherit;
+        border: inherit;
+        color: #000000;
+    }
 h1,h2,h3 {font-weight:400;}
 h1,h2 {font-size:24px;}
 h3 {font-size:14px;}
