@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "Latex Formulas Memo"
-description: "life"
-category: 
+description: ""
+category: tech
 tags: [latex]
 ---
 {% include JB/setup %}
