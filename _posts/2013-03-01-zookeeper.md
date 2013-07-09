@@ -3,7 +3,7 @@ layout: post
 title: "Apache Zookeeper"
 description: ""
 category: tech
-tags: [zookeeper, zab]
+tags: [hadoop, zookeeper, zab]
 ---
 {% include JB/setup %}
 
