@@ -9,11 +9,14 @@ keywords: "子孑，思考，阅读，音乐，咖啡，旅游，云计算，大
 <div id="content">
 	<div id="about" class="post">
 
-		<p>Free yourself from common foolishness.</p>
+		<p>叔本华:意欲是唯一无法枯竭的力量，它受到激情的刺激就会抬头。但是意欲持久的兴奋，却不是单一纯净、不含杂质的，它是与痛苦紧密相联。</p>
 
-		<p>This requires a special sort of sanity. Common foolishness is authorized by custom, and some people who resisted the ignorance of individuals were unable to resist that of the multitude. The vulgar are never happy with their luck, even when it is best, or unhappy with intellect, even when it is the worst. Unhappy with their own happiness, they covet that of others. People of today praise things of yesterday, and those who are here, the things that are there. The past seems better, and everything distant is held more dear. The person who laughs at everything is just as foolish as the one made wretched by everything.</p>
+		<p>尼采:懂得“为何”而活的人，差不多“任何”痛苦都忍受得住。</p>
+
+        <p>庄子:宇宙中所有的生命，所有的一切万物，都是物与物之间互相的变化。</p>
 
 		<p>Contact Me：</p>
+        <p>linkedin:<a href='http://www.linkedin.com/pub/zhang-jun/32/366/6b1'>zhang jun</a></p>
 		<p>douban: <a href='http://book.douban.com/people/zhangjunhd/'>子孑</a></p>
 		<p>weibo： <a href='http://weibo.com/zhangjunhd'>i_张俊</a></p>
 	</div>
