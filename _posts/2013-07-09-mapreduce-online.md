@@ -3,7 +3,7 @@ layout: post
 title: "MapReduce Online"
 description: ""
 category: tech
-tags: [mapreduce, paper]
+tags: [MapReduce, paper]
 ---
 {% include JB/setup %}
 
