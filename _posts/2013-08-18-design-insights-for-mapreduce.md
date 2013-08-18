@@ -2,7 +2,7 @@
 layout: post
 title: "Design Insights for MapReduce from Diverse Production Workloads"
 description: ""
-category: 
+category: tech
 tags: [paper, MapReduce]
 ---
 {% include JB/setup %}

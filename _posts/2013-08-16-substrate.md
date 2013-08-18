@@ -2,7 +2,7 @@
 layout: post
 title: "A Common Substrate for Cluster Computing"
 description: ""
-category: 
+category: tech
 tags: [paper, nexus, dryad, MapReduce]
 ---
 {% include JB/setup %}
