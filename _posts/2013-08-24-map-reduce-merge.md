@@ -2,7 +2,7 @@
 layout: post
 title: "Map Reduce Merge"
 description: ""
-category: 
+category: tech
 tags: [paper, MapReduce]
 ---
 {% include JB/setup %}
