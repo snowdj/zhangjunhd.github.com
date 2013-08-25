@@ -2,7 +2,7 @@
 layout: post
 title: "MapReduce"
 description: ""
-category: 
+category: tech
 tags: [paper, google, MapReduce]
 ---
 {% include JB/setup %}
