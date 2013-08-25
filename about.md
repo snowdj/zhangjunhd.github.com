@@ -15,7 +15,9 @@ keywords: "子孑，思考，阅读，音乐，咖啡，旅游，云计算，大
 
         <p>庄子:宇宙中所有的生命，所有的一切万物，都是物与物之间互相的变化。</p>
 
-		<p>Contact Me：</p>
+		<p>曾国藩:1、与多疑人共事,事必不成。与好利人共事,己必受累。2、无实学而有虚名,自知当有祸变。3、凡全副精神专注一事,终身必有成就。4、天下古今之庸人,皆以一惰字致败；天下古今之人才,皆以一傲字致败。5、观人四法：讲信用、无官气、有条理、少大话</p>
+
+        <p>About Me：</p>
         <p>linkedin:<a href='http://www.linkedin.com/pub/zhang-jun/32/366/6b1'>zhang jun</a></p>
 		<p>douban: <a href='http://book.douban.com/people/zhangjunhd/'>子孑</a></p>
 		<p>weibo： <a href='http://weibo.com/zhangjunhd'>i_张俊</a></p>
