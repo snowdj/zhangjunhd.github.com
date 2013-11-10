@@ -3,7 +3,7 @@ layout: post
 title: "MR and Processing Language"
 description: ""
 category: tech
-tags: [MapReduce, pig, scope, dryad, linq, sawzall]
+tags: [MapReduce, pig, Scope, Dryad, LINQ, Sawzall]
 ---
 {% include JB/setup %}
 
