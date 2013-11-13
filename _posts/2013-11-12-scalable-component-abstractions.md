@@ -10,7 +10,7 @@ tags: [scala]
 paper review 62 [Scalable Component Abstractions][1]
 <!--break-->
 
-####62 [Scalable Component Abstractions][1]
+##62 [Scalable Component Abstractions][1]
 
 Ideally, it should be possible to lift an arbitrary system of software components with static data and hard references, resulting in a system with the same structure, but with neither static data nor hard references. The result of such a lifting should create components that are first-class values. We have identified three programming language abstractions that enable such liftings.
 
@@ -18,8 +18,8 @@ Ideally, it should be possible to lift an arbitrary system of software component
 * **Selftype annotations** allow one to attach a programmer-defined type to this. This turns out to be a convenient way to express required services of a component at the level where it connects with other components.
 * **Modular mixin composition** provides a flexible way to compose components and component types. Unlike functor applications, mixin compositions can establish recursive references between cooperating components. No explicit wiring between provided and required services is needed. Services are modelled as component members. Provided and required services are matched by name and therefore do not have to be associated explicitly by hand.
 
-#####62.1 CONSTRUCTS FOR COMPONENT ABSTRACTION AND COMPOSITION
-#####62.1.1 Abstract Type Members
+##62.1 CONSTRUCTS FOR COMPONENT ABSTRACTION AND COMPOSITION
+####62.1.1 Abstract Type Members
 
 {% highlight scala %}
 abstract class AbsCell { 
@@ -33,7 +33,7 @@ val cell = new AbsCell { type T = int; val init = 1 }
 cell.set(cell.get * 2)
 {% endhighlight %}
 
-#####62.1.2 Path-dependent types
+####62.1.2 Path-dependent types
 
 {% highlight scala %}
 def reset(c: AbsCell): unit = c.set(c.init);
@@ -53,7 +53,7 @@ var flip = false; def f(): AbsCell = {  flip = !flip;  if (flip) new AbsCell {
   }}
 f().set(f().get) // illegal!{% endhighlight %}
 
-#####62.1.3 Type selection and singleton types
+####62.1.3 Type selection and singleton types
 In Scala, this type is also expressible, in the form of Outer#Inner, where Outer is the name of the outer class in which class Inner is defined. The "#" operator denotes a `type selection`.
 
 In fact, path dependent types can be expanded to type selections. The path dependent type p.t is taken as a short-hand for p.type#t. Here, p.type is a `singleton type`, which represents just the object denoted by p.
@@ -72,7 +72,7 @@ d.incr.decr;
 
 Without the singleton type *this.type*, this would not have been possible, since d.incr would be of type C, which does not have a decr member. 
 
-#####62.1.4 Parameter bounds
+####62.1.4 Parameter bounds
 
 {% highlight scala %}
 abstract class Ordered { 
@@ -88,7 +88,7 @@ abstract class MaxCell extends AbsCell {
   type T <: Ordered { type O = T }  def setMax(x: T) = if (get < x) set(x)}
 {% endhighlight %}
 
-#####62.2 Modular Mixin Composition
+##62.2 Modular Mixin Composition
 
 {% highlight scala %}
 trait AbsIterator { 
@@ -147,7 +147,7 @@ StringIterator(someString) with SyncIterator
                           with RichIterator
 {% endhighlight %}
 
-#####62.3 Selftype Annotations
+##62.3 Selftype Annotations
 
 Each of the operands of a mixin composition C0 with ... with Cn, must refer to a class. **The mixin composition mechanism does not allow any Ci to refer to an abstract type**. This restriction makes it possible to statically check for ambiguities and override confiicts at the point where a class is composed. Scala's **selftype annotations provide an alternative way of associating a class with an abstract type**.
 
