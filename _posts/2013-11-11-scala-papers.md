@@ -2,7 +2,7 @@
 layout: post
 title: "Independently Extensible"
 description: ""
-category: tech
+category: travel
 tags: [scala]
 ---
 {% include JB/setup %}

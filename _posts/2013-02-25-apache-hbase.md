@@ -3,7 +3,7 @@ layout: post
 title: "Apache HBase"
 description : ""
 category: tech
-tags: [hadoop, HBase]
+tags: [Hadoop, HBase]
 ---
 {% include JB/setup %}
 

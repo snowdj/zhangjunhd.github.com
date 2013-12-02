@@ -2,7 +2,7 @@
 layout: post
 title: "Scala Overview"
 description: ""
-category: tech
+category: travel
 tags: [scala]
 ---
 {% include JB/setup %}
@@ -16,9 +16,9 @@ paper review 63 [An Overview of the Scala Programming Language][1]
 
 ####63.1.1 Classes
 
-* Every class in Scala inherits from class `Scala.Any`. 
-* Subclasses of Any fall into two categories: the value classes which inherit from `scala.AnyVal` and the reference classes which inherit from `scala.AnyRef`. 
-* Every primitive Java type name corresponds to a value class, and is mapped to it by a predefined type alias. In a Java environment, AnyRef is identified with the root class java.lang.Object.
+* Scala所有的类都继承自类 `Scala.Any`. 
+* Any 的所有子类分成两类: 值类继承自 `scala.AnyVal` ，引用类继承自 `scala.AnyRef`. 
+* 每一个Java的primitive类型都对应一个值类, 并且都映射到一个预先定义好的类型别名。在Java中, AnyRef 等同于 java.lang.Object.
 
 ####63.1.2 Operations
 
@@ -29,7 +29,7 @@ abstract class Nat {  def isZero: boolean  def pred: Nat  def succ: Nat = new
 }
 {% endhighlight %}
 
-We now extend class Nat with a singleton object Zero and a class for representing successors, Succ.
+现在我们继承类 Nat 实现一个单例对象 Zero 和一个子类 Succ.
 
 {% highlight scala %}
 object Zero extends Nat {  def isZero: boolean = true  def pred: Nat = throw new Error("Zero.pred") 
@@ -37,11 +37,11 @@ object Zero extends Nat {  def isZero: boolean = true  def pred: Nat = throw n
 class Succ(n: Nat) extends Nat {  def isZero: boolean = false  def pred: Nat = n  override def toString: String = "Succ("+n+")"}
 {% endhighlight %}
 
-In Scala, constructor parameters follow the class name; no separate class constructor definition within the body of Succ is needed. This constructor is called the `primary constructor`; the whole body of the class is executed when the primary constructor is called at the time the class is instantiated. There is syntax for `secondary constructors` in case more than one constructor is desired.
+在Scala中, 构造函数的参数紧跟在类名之后;可以看到在类Succ中没有单独的构造函数定义体存在。 此构造函数被称为 `primary constructor`; 类中的所有语句在类被实例化调用rimary constructor的时候即执行了。当需要多于一个构造函数的情况时，可以使用 `secondary constructors` 。
 
 ####63.1.3 Variables and Properties
 
-Scala defines setter and getter methods as follows.
+Scala按如下方式定义 setter 和 getter 方法。
 
 {% highlight scala %}
 def x: Tdef x_= (newval: T): unit
@@ -56,24 +56,20 @@ def exists[T](xs: Array[T], p: T => boolean) = {
   var i: int = 0  while (i < xs.length && !p(xs(i))) i = i + 1  i < xs.length}
 {% endhighlight %}
 
-The type of p is the function type T => boolean, which has as values all functions with domain T and range boolean.
-
-Functions which take functions as arguments, or return them as results, are called `higher-order functions`:
+类型p 是函数类型T => boolean, 它定义定义域为T且值为boolean的所有函数。使用函数为参数或者返回函数的所有函数被称为 `higher-order functions`:
 
 {% highlight scala %}
 def forall[T](xs: Array[T], p: T => boolean) = { 
   def not_p(x: T) = !p(x)  !exists(xs, not_p)}
 {% endhighlight %}
 
-It is also possible to define a function without giving it a name:
+可以定义没有名字的函数:
 
 {% highlight scala %}
 def forall[T](xs: Array[T], p: T => boolean) = !exists(xs, (x: T) => !p(x))
 {% endhighlight %}
 
-Here, (x: T) => !p(x) defines an `anonymous function` which maps its parameter x of type T to !p(x).
-
-Using exists and forall, we can de􏰫ne a function hasZeroRow：
+这里, (x: T) => !p(x) 被定义为 `anonymous function` 。使用 exists 和 forall, 我们可以定义函数 hasZeroRow：
 
 {% highlight scala %}
 def hasZeroRow(matrix: Array[Array[int]]) = 

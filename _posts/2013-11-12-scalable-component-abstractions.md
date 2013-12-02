@@ -2,7 +2,7 @@
 layout: post
 title: "Scalable Component Abstractions"
 description: ""
-category: tech
+category: travel
 tags: [scala]
 ---
 {% include JB/setup %}

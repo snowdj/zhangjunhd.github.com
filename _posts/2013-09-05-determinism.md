@@ -3,7 +3,7 @@ layout: post
 title: "Determinism"
 description: ""
 category: 
-tags: [paper, transaction, yale]
+tags: [transaction, yale]
 ---
 {% include JB/setup %}
 paper review:[The Case for Determinism in Database Systems](http://cs-www.cs.yale.edu/homes/dna/papers/determinism-vldb10.pdf)

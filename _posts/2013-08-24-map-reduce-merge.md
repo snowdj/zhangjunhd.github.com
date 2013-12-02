@@ -3,7 +3,7 @@ layout: post
 title: "Map Reduce Merge"
 description: ""
 category: tech
-tags: [paper, MapReduce]
+tags: [MapReduce]
 ---
 {% include JB/setup %}
 paper review:[Map-Reduce-Merge: Simplified Relational Data Processing on Large Clusters](http://www.cs.duke.edu/courses/cps399.28/current/papers/sigmod07-YangDasdanEtAl-map_reduce_merge.pdf)

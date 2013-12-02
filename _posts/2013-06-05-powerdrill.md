@@ -3,7 +3,7 @@ layout: post
 title: "PowerDrill"
 description: ""
 category: tech
-tags: [paper, google, powerdrill]
+tags: [google, Powerdrill]
 ---
 {% include JB/setup %}
 paper review:[Processing a Trillion Cells per Mouse Click](http://vldb.org/pvldb/vol5/p1436_alexanderhall_vldb2012.pdf)

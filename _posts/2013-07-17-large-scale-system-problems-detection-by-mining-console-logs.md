@@ -3,7 +3,7 @@ layout: post
 title: "Large Scale System Problems Detection by Mining Console Logs"
 description: ""
 category: tech 
-tags: [log, paper]
+tags: [log]
 ---
 {% include JB/setup %}
 paper review:[Large-Scale System Problems Detection by Mining Console Logs](http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-103.pdf)

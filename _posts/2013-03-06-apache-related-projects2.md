@@ -3,7 +3,7 @@ layout: post
 title: "Apache Hadoop-Related Projects Design Architecture2"
 description: ""
 category: tech
-tags: [hadoop, hcatalog, whirr, mahout]
+tags: [Hadoop, Hcatalog, Whirr, Mahout]
 ---
 {% include JB/setup %}
 

@@ -3,7 +3,7 @@ layout: post
 title: "Apache Hadoop-Related Projects Design Architecture"
 description: ""
 category: tech
-tags: [hadoop, ambari, flume, HDFS, MapReduce, message]
+tags: [Hadoop, Ambari, Flume, HDFS, MapReduce, message]
 ---
 {% include JB/setup %}
 

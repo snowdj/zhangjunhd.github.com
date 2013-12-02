@@ -3,7 +3,7 @@ layout: post
 title: "CAP,ACID,BASE"
 description: ""
 category: tech
-tags: [CAP, BASE, ACID, queue, MVCC, 2PC, transaction, paxos, replication]
+tags: [CAP, BASE, ACID, queue, MVCC, 2PC, transaction, Paxos, replication]
 ---
 {% include JB/setup %}
 CAP, BASE, ACID 相关文章 review 1-10

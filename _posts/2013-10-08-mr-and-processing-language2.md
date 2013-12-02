@@ -3,7 +3,7 @@ layout: post
 title: "MR and Processing Language2"
 description: ""
 category: tech
-tags: [python, jquery, MapReduce, pig, LINQ]
+tags: [python, jquery, MapReduce, Pig, LINQ]
 ---
 {% include JB/setup %}
 

@@ -4,7 +4,6 @@ title: "J's 生活志"
 description: "子孑的生活志"
 keywords: "子孑，生活志"
 ---
-{% include JB/setup %}
 
 <div id="content">
     <article id="post_list">

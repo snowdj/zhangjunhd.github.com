@@ -2,7 +2,7 @@
 layout: post
 title: "Scala Collections"
 description: ""
-category: tech
+category: travel
 tags: [scala]
 ---
 {% include JB/setup %}

@@ -3,7 +3,7 @@ layout: post
 title: "Multi-agent Cluster Scheduling for Scalability and Flexibility"
 description: ""
 category: tech
-tags: [paper, mesos, omega]
+tags: [Mesos, Omega]
 ---
 {% include JB/setup %}
 paper review:[Multi-agent Cluster Scheduling for Scalability and Flexibility

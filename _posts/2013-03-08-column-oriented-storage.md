@@ -3,7 +3,7 @@ layout: post
 title: "Column Oriented Storage"
 description: ""
 category: tech
-tags: [paper, column, MapReduce]
+tags: [column, MapReduce]
 ---
 {% include JB/setup %}
 paper review:[Column-Oriented Storage Techniques for MapReduce](http://arxiv.org/pdf/1105.4252.pdf)
