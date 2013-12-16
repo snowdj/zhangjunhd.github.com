@@ -2,7 +2,7 @@
 layout: post
 title: "Improving MapReduce Performance in Heterogeneous Environments"
 description: ""
-category: tech
+category: 云计算
 tags: [MapReduce]
 ---
 {% include JB/setup %}

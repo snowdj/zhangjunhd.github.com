@@ -2,7 +2,7 @@
 layout: post
 title: "Latex Formulas Memo"
 description: ""
-category: tech
+category: 建站
 tags: [latex]
 ---
 {% include JB/setup %}

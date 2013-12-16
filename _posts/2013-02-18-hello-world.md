@@ -1,8 +1,8 @@
 ---
 layout : post 
 title : "Hello World"
-category : life
-tags : []
+category : 建站
+tags : [jekyll]
 ---
 {% include JB/setup %}
 

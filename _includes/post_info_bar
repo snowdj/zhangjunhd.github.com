@@ -1,0 +1,11 @@
+{{ page.date|date:"%Y-%m-%d" }} 
+
+&sdot; 分类：
+{% for cat in page.categories %}
+	<a href="/pages/categories.html#{{cat}}-ref">{{cat}}</a>&nbsp;
+{% endfor %}
+
+&sdot; 标签： 
+{% for tag in page.tags %}
+	<a href="/pages/tags.html#{{tag}}-ref">{{tag}}</a>&nbsp;
+{% endfor %}

@@ -1,0 +1,7 @@
+{% if page.lastmod %}
+    {{ page.lastmod | date: "%Y-%m-%d" | date_to_xmlschema}}
+{% elsif page.date %}
+    {{ page.date | date: "%Y-%m-%d" | date_to_xmlschema}}
+{% else %}
+    {{ site.time | date: "%Y-%m-%d" | date_to_xmlschema}}
+{% endif %}

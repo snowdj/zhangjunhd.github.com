@@ -2,7 +2,7 @@
 layout: post
 title: "MR and Processing Language3"
 description: ""
-category: tech
+category: 云计算
 tags: [MapReduce, Incoop, Mantri, HaLoop, Twister, Nectar, Comet, BSP, Pregel, Dryad]
 ---
 {% include JB/setup %}

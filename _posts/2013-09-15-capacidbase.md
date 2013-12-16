@@ -2,7 +2,7 @@
 layout: post
 title: "CAP,ACID,BASE"
 description: ""
-category: tech
+category: 云计算
 tags: [CAP, BASE, ACID, queue, MVCC, 2PC, transaction, Paxos, replication]
 ---
 {% include JB/setup %}

@@ -2,7 +2,7 @@
 layout: post
 title: "Apache HBase"
 description : ""
-category: tech
+category: 云计算
 tags: [Hadoop, HBase]
 ---
 {% include JB/setup %}

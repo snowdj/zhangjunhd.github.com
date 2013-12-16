@@ -2,7 +2,7 @@
 layout: post
 title: "Large Scale System Problems Detection by Mining Console Logs"
 description: ""
-category: tech 
+category: 大数据 
 tags: [log]
 ---
 {% include JB/setup %}

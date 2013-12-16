@@ -2,7 +2,7 @@
 layout: post
 title: "Apache Hadoop-Related Projects Design Architecture2"
 description: ""
-category: tech
+category: 云计算
 tags: [Hadoop, Hcatalog, Whirr, Mahout]
 ---
 {% include JB/setup %}
@@ -96,35 +96,32 @@ __Example:Flume Service__(a service for collecting and moving large amounts of d
 
 * Write a ClusterActionHandler for each role
 
-        {% highlight java %}  
-        public class FlumeNodeHandler extends ClusterActionHandlerSupport {
-            public static final String ROLE = "flumedemo-node";
-  
-            @Override 
-            public String getRole() { return ROLE; }
-  
-            @Override
-            protected void beforeBootstrap(ClusterActionEvent event) throws
-                IOException, InterruptedException {
-                addStatement(event, call("install_java"));
-                addStatement(event, call("install_flumedemo"));
-            }
-        
-            // more ...
-        }
-        {% endhighlight %}
+{% highlight java %}  
+public class FlumeNodeHandler extends ClusterActionHandlerSupport {
+    public static final String ROLE = "flumedemo-node";
+    @Override 
+    public String getRole() { return ROLE; }
+    @Override
+    protected void beforeBootstrap(ClusterActionEvent event) throws
+        IOException, InterruptedException {
+        addStatement(event, call("install_java"));
+        addStatement(event, call("install_flumedemo"));
+    }
+    // more ...
+}
+{% endhighlight %}
 
  * Write scripts that run on cloud nodes
    * install_java is built in
    * Other functions are specified in individual files
 
-        {% highlight java %}  
-        function install_flumedemo() {
-            curl -O http://cloud.github.com/downloads/cloudera/flume/flume-0.9.3.tar.gz
-            tar -C /usr/local/ -zxf flume-0.9.3.tar.gz
-            echo "export FLUME_CONF_DIR=/usr/local/flume-0.9.3/conf" >> /etc/profile
-        }
-        {% endhighlight %}
+{% highlight java %}  
+function install_flumedemo() {
+    curl -O http://cloud.github.com/downloads/cloudera/flume/flume-0.9.3.tar.gz
+    tar -C /usr/local/ -zxf flume-0.9.3.tar.gz
+    echo "export FLUME_CONF_DIR=/usr/local/flume-0.9.3/conf" >> /etc/profile
+}
+{% endhighlight %}
 
 * Package and install
   * Each service is a self-contained JAR
@@ -149,17 +146,16 @@ __Example:Flume Service__(a service for collecting and moving large amounts of d
   
   * or Java
 
-        {% highlight java %}  
-        Configuration conf = new PropertiesConfiguration("flumedemo.properties");
+{% highlight java %}  
+Configuration conf = new PropertiesConfiguration("flumedemo.properties");
 
-        ClusterSpec spec = new ClusterSpec(conf);
-        Service s = new Service();
-        Cluster cluster = s.launchCluster(spec);
+ClusterSpec spec = new ClusterSpec(conf);
+Service s = new Service();
+Cluster cluster = s.launchCluster(spec);
   
-        // interact with cluster
-
-        s.destroyCluster(spec);
-        {% endhighlight %}
+// interact with cluster
+s.destroyCluster(spec);
+{% endhighlight %}
 
 * Orchestration
   * Instance templates are acted on independently in parallel

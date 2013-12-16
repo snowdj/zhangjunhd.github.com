@@ -1,0 +1,40 @@
+---
+layout: nil
+title : RSS Feed
+---
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet href='/assets/rss.xsl' type='text/xsl' ?>
+
+<rss 
+        xmlns:atom="http://www.w3.org/2005/Atom" 
+        xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+        xmlns:wfw="http://wellformedweb.org/CommentAPI/" 
+        xmlns:dc="http://purl.org/dc/elements/1.1/" 
+        version="2.0">
+
+<channel>
+        <atom:link href="http://zhangjunhd.github.io/atom.xml" type="application/rss+xml" rel="self"></atom:link>
+        <title>{{ site.title }}</title>
+        <description>子孑 - What is a Career in Big Data?</description>
+        <link>{{ site.url }}{{ site.rss_path }}</link>
+        <link>{{ site.url }}</link>
+        <language>cn</language>
+        <lastBuildDate>{{ site.time | date_to_xmlschema }}</lastBuildDate>
+        <pubDate>{% include lastmod %}</pubDate>
+        <ttl>1800</ttl>
+
+{% for post in site.posts limit:100 %}
+        <item>
+                <title>{{ post.title }}</title>
+                <link>{{ site.url }}{{ post.url }}</link>
+                <category>{{}}</category>
+                <description>{{ post.description | append:' ' | xml_escape }}</description>
+                <content:encoded>{{ post.description | append:' ' | xml_escape }}</content:encoded>
+                <wfw:commentRSS>/</wfw:commentRSS>
+                <guid>{{ site.url }}{{ post.id }}</guid>
+                <pubDate>{% include lastmod %}</pubDate>
+        </item>
+{% endfor %}
+
+</channel>
+</rss>

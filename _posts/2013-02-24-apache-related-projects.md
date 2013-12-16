@@ -2,7 +2,7 @@
 layout: post
 title: "Apache Hadoop-Related Projects Design Architecture"
 description: ""
-category: tech
+category: 云计算
 tags: [Hadoop, Ambari, Flume, HDFS, MapReduce, message]
 ---
 {% include JB/setup %}

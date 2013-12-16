@@ -1,5 +1,121 @@
 ---
-layout: default
+layout:           default
 ---
-{% include JB/setup %}
-{% include themes/zhangjunhd/post.html %}
+
+{% capture IMG_PATH %}/images/{{ page.date | date: "%Y" }}/{{page.path}}/{% endcapture %}
+
+<div class="span9">
+  <p class="pre-meta">{% include post_info_bar %}
+{% if page.lastmod %}
+  <span class="alert alert-success"><strong>
+  最近更新：{{ page.lastmod | date: "%Y-%m-%d" }}
+  </strong></span>
+  {% endif %}
+  </p>
+  
+  {% if page.description %}<p>摘要：<br/>{{page.description}}</p>{% endif %}
+  
+      <div id="menuIndex" class="row-fluid" style="background-color:#ecf0f5;"></div>
+  <hr style="height:3px;border:none;border-top:3px double"/>
+  <div id="content">
+      {{ content }}   
+  </div> 
+  
+  <!--  分享  -->
+  <!-- Baidu Button BEGIN -->
+  <div class="bdsharebuttonbox">
+  <a href="#" class="bds_more" data-cmd="more"></a>
+  <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+  <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+  <a href="#" class="bds_xg" data-cmd="xg" title="分享到鲜果"></a>
+  <a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a>
+  <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+  </div>
+  <script>
+window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdPic":"","bdStyle":"0","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=86835285.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+  <!-- Baidu Button END -->
+
+  <hr/>      
+  <p class="pre-meta">{% include post_info_bar %}</p>
+
+      <!--上一篇，下一篇-->
+      <div class="row-fluid">
+      {% if page.next %}
+        <div class="span6">
+          <a href="{{ page.next.url }}" rel="bookmark">&laquo;&nbsp;下一篇：{{ page.next.title | truncatewords:5 }}</a>
+        </div>
+      {% endif %}
+
+      {% if page.previous %}
+        <div class="span6">
+        <a class="pull-right" href="{{ page.previous.url }}" rel="bookmark">上一篇：{{ page.previous.title | truncatewords:5 }}&nbsp;&raquo;</a>
+        </div>
+      {% endif %}
+      </div>
+
+     
+     
+
+      <!--相关文章-->
+      <div class="row-fluid">
+        
+          <h4>相关文章</h4>
+           <!--youjian-->
+        <!-- UJian Button BEGIN -->
+<div class="ujian-hook"></div>
+<script type="text/javascript">var ujian_config = {num:10,showType:4,lkrc:0,bgColor:'#',mouseoverColor:'#FFFFFF',textColor:'#16A085'};</script>
+<script type="text/javascript" src="http://v1.ujian.cc/code/ujian.js?uid=1784345"></script>
+<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
+<!-- UJian Button END -->
+
+          <!--wumii block-->
+          <script type="text/javascript" id="wumiiRelatedItems"></script>
+
+
+          <!--for wumii ， can be moved to footer-->
+         <script type="text/javascript">
+            var wumiiPermaLink = "{{site.url}}{{page.url}}"; //请用代码生成文章永久的链接
+            var wumiiTitle = "{{page.title}}"; //请用代码生成文章标题
+            var wumiiTags = "{% include texttags %}"; //请用代码生成文章标签，以英文逗号分隔，如："标签1,标签2"
+            var wumiiCategories = ["{{page.categories}}"]; //请用代码生成文章分类，分类名放在 JSONArray 中，如: ["分类1", "分类2"]
+            var wumiiSitePrefix = "http://www.thinkinside.tk/";
+            var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+        </script>
+        <script type="text/javascript" src="http://widget.wumii.cn/ext/relatedItemsWidget" async="true"></script>
+        <a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+            <img src="http://static.wumii.cn/images/pixel.png" alt="无觅相关文章插件，快速提升流量" style="border:0;padding:0;margin:0;" />
+        </a>
+        <!--end of wumii-->
+        
+
+       
+
+        
+       
+      </div><!--END of 相关文章-->
+      <hr/>
+      <!--  评论  -->
+      <div class="row-fluid">
+        
+          <!-- UY BEGIN -->
+          <div id="uyan_frame"></div>
+          <script type="text/javascript" id="UYScript" src="http://v1.uyan.cc/js/iframe.js?UYUserId=1784345" async="true"></script>
+          <!-- UY END -->
+        
+      </div>
+
+ 
+  </div>
+       <!--style="position:fixed;right:20px;"-->
+    <div class="span3">
+      {% include parts/sidebar.html %}
+    
+
+      <div class="row-fluid" style="background-color: rgb(44, 62, 80);">
+          推荐阅读
+      </div>
+    </div>
+</div>
+</div>
+<script src="/assets/js/post.js"></script>

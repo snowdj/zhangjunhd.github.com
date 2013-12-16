@@ -2,7 +2,7 @@
 layout: post
 title: "MR and Processing Language"
 description: ""
-category: tech
+category: 云计算
 tags: [MapReduce, Pig, Scope, Dryad, LINQ, Sawzall]
 ---
 {% include JB/setup %}

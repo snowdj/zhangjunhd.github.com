@@ -2,7 +2,7 @@
 layout: post
 title: "Design Insights for MapReduce from Diverse Production Workloads"
 description: ""
-category: tech
+category: 云计算
 tags: [MapReduce]
 ---
 {% include JB/setup %}

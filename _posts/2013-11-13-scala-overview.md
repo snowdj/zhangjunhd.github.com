@@ -2,7 +2,7 @@
 layout: post
 title: "Scala Overview"
 description: ""
-category: travel
+category: 编程
 tags: [scala]
 ---
 {% include JB/setup %}
@@ -77,7 +77,7 @@ def hasZeroRow(matrix: Array[Array[int]]) =
 {% endhighlight %}
 
 ####63.2.2 Functions are Objects
-The function type S => T is equivalent to the parameterized class type scala.Function1[S, T], which is defined as follows in the standard Scala library:
+函数类型S => T等价于一个参数化的类scala.Function1[S, T]，它在标准Scala的库中定义如下：
 
 {% highlight scala %}
 package scalaabstract class Function1[-S, +T] {  def apply(x: S): T 

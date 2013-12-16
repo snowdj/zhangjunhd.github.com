@@ -2,8 +2,8 @@
 layout: post
 title: "PowerDrill"
 description: ""
-category: tech
-tags: [google, Powerdrill]
+category: 云计算
+tags: [Powerdrill]
 ---
 {% include JB/setup %}
 paper review:[Processing a Trillion Cells per Mouse Click](http://vldb.org/pvldb/vol5/p1436_alexanderhall_vldb2012.pdf)

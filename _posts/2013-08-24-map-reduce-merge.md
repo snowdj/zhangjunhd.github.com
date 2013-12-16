@@ -2,7 +2,7 @@
 layout: post
 title: "Map Reduce Merge"
 description: ""
-category: tech
+category: 云计算
 tags: [MapReduce]
 ---
 {% include JB/setup %}

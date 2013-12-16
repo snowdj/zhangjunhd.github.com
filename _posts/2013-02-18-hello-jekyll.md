@@ -2,8 +2,7 @@
 layout: post
 title: "Hello jekyll"
 description: "本文介绍基于jekyll+markdown+git+github快速搭建blog的入门方法，以及自己对此的一些认识和相关资料的官方文档。"
-keywords: "jekyll,markdown,github"
-category: life
+category: 建站
 tags: [jekyll, markdown, latex]
 ---
 {% include JB/setup %}
@@ -16,10 +15,6 @@ tags: [jekyll, markdown, latex]
 2. 方便。直接托管在github上，再绑定下域名的指向，如果你买VPS只为搭blog的话，那这笔小费也可以省了。顺便，因为git的关系，还能做到离线写文章。
 3. 清晰，写文章清晰。当然，这是和markdown有关，markdown易写的语法以及完全使用自己本地文本编译器的方式，让在blog系统上写文章重新变回了一种享受。
 4. 方便折腾。对于喜欢自己布局或者正在学习布局的同学们来说，能在本地折腾而且不需要重新deploy，这个很诱人。
- 
-<!--break-->
-
----------  
 
 因为自己电脑的关系，下面介绍下mac下jekyll的安装步骤，其他OS的参考下[官方安装文档][4]吧
 
@@ -72,7 +67,9 @@ tags: [jekyll, markdown, latex]
 3. 集成Latex  
 [MathJax][19]可以和[markdown][3]结合起来，用[Latex][18]来显示数学公式。具体可参考[mathjax in markdown][20]和[让Jekyll支持Latex][21]。例子`\( \vec{A} \cdot \vec{B} = 0 \)`
 
-4. 其他相关的资料 
+4. 代码高亮 [用Jekyll和Pygments配置代码高亮][22]
+
+5. 其他相关的资料 
     * 如果你选择托管在github上，但是想绑定自己的域名，那么请参考[GitHub Pages][9]。
     * 如果你想部署到自己的VPS,也很方便，可以参考[Deployment][10]。
     * 如果你想参考其他利用jekyll搭建的网站，可以参考[Site List][11]。
@@ -102,4 +99,5 @@ tags: [jekyll, markdown, latex]
 [18]: http://www.latex-project.org/
 [19]: http://www.mathjax.org/
 [20]: http://doswa.com/2011/07/20/mathjax-in-markdown.html
-[21]: http://blog.drowcoder.me/Blog/2012/07/23/latex-in-jekyll/
+[21]: http://blog.drowcoder.me/blog/2012/07/23/latex-in-jekyll/
+[22]: http://zyzhang.github.io/blog/2012/08/31/highlight-with-Jekyll-and-Pygments/

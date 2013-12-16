@@ -1,0 +1,47 @@
+---
+layout: page
+title: 分类
+---
+
+<ul class="tag_box inline">
+  {% assign categories_list = site.categories %}
+  {% if categories_list.first[0] == null %}
+    {% for category in categories_list %} 
+    	<li><a href="{{ BASE_PATH }}{{ site.JB.categories_path }}#{{ category }}-ref" rel="category">
+    		{{ category | join: "/" }} 
+    	</a><span class="badge">{{ site.categories[category].size }}</span></li>
+    {% endfor %}
+  {% else %}
+    {% for category in categories_list %} 
+    	<li><a href="{{ BASE_PATH }}{{ site.JB.categories_path }}#{{ category[0] }}-ref" rel="category">
+    		{{ category[0] | join: "/" }} 
+    	</a><span class="badge" style="vertical-align: super;">{{ category[1].size }}</span></li>
+    {% endfor %}
+  {% endif %}
+  {% assign categories_list = nil %}
+</ul>
+
+<hr/>
+
+{% for category in site.categories %} 
+  <h2 id="{{ category[0] }}-ref">{{ category[0] | join: "/" }}</h2>
+  <ul>
+    {% assign pages_list = category[1] %}  
+    {% for node in pages_list %}
+  {% if node.title != null %}
+    {% if group == null or group == node.group %}
+      
+        <li>{{ node.date | date: "%Y-%m-%d" }} &raquo; <a href="{{ BASE_PATH }}{{node.url}}">{{node.title}}</a>
+&sdot; 
+      {% for tag in node.tags %}
+        <a class="label" href="/pages/tags.html#{{tag}}-ref">{{tag}}</a>&nbsp;
+      {% endfor %}
+        </li>
+      
+    {% endif %}
+  {% endif %}
+{% endfor %}
+{% assign pages_list = nil %}
+{% assign group = nil %}
+  </ul>
+{% endfor %}

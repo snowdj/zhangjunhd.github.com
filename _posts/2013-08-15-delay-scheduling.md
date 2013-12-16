@@ -2,7 +2,7 @@
 layout: post
 title: "Delay Scheduling"
 description: ""
-category: tech
+category: 云计算
 tags: [MapReduce, Hadoop]
 ---
 {% include JB/setup %}

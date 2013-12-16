@@ -2,7 +2,7 @@
 layout: post
 title: "Column Oriented Storage"
 description: ""
-category: tech
+category: 云计算
 tags: [column, MapReduce]
 ---
 {% include JB/setup %}

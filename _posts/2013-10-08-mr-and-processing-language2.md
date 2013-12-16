@@ -2,7 +2,7 @@
 layout: post
 title: "MR and Processing Language2"
 description: ""
-category: tech
+category: 云计算
 tags: [python, jquery, MapReduce, Pig, LINQ]
 ---
 {% include JB/setup %}

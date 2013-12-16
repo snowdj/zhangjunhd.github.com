@@ -2,8 +2,8 @@
 layout: post
 title: "Percolator"
 description: ""
-category: tech
-tags: [google, Bigtable, Percolator]
+category: 云计算
+tags: [Bigtable, Percolator]
 ---
 {% include JB/setup %}
 paper review:[Large-scale Incremental Processing Using Distributed Transactions and Notiﬁcations](http://static.googleusercontent.com/external_content/untrusted_dlcp/research.google.com/zh-CN//pubs/archive/36726.pdf)

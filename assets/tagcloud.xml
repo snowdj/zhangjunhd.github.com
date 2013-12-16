@@ -1,0 +1,12 @@
+---
+layout: nil
+title : RSS Feed
+---
+<?xml version="1.0" encoding="utf-8"?>
+<tags>
+{% for tag in site.tags %}
+	<a href="{{site.url}}/tags.html#{{ tag[0] }}-ref"  title="3 topics" rel="tag" style="font-size:13pt;">
+{{ tag[0] }}</a>
+
+{% endfor %}
+</tags>

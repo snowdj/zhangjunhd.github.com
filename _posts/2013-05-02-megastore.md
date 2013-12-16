@@ -2,8 +2,8 @@
 layout: post
 title: "Megastore"
 description: ""
-category: tech
-tags: [Megastore, google, Bigtable]
+category: 云计算
+tags: [Megastore, Bigtable]
 ---
 {% include JB/setup %}
 paper review:[Megastore: Providing Scalable, Highly Available Storage for Interactive Services](http://static.googleusercontent.com/external_content/untrusted_dlcp/research.google.com/zh-CN//pubs/archive/36971.pdf)

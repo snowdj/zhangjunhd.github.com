@@ -2,7 +2,7 @@
 layout: post
 title: "Multi-agent Cluster Scheduling for Scalability and Flexibility"
 description: ""
-category: tech
+category: 云计算
 tags: [Mesos, Omega]
 ---
 {% include JB/setup %}

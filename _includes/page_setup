@@ -1,0 +1,1 @@
+{% capture img_path %}/images/posts/{{ page.categories[0]}}/{{page.url}}/{% endcapture %}
