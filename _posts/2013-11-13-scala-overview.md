@@ -1,14 +1,11 @@
 ---
 layout: post
 title: "Scala Overview"
-description: ""
+description: "paper review 63.An Overview of the Scala Programming Language"
 category: 编程
 tags: [scala]
 ---
 {% include JB/setup %}
-
-paper review 63 [An Overview of the Scala Programming Language][1]
-<!--break-->
 
 ##63 [An Overview of the Scala Programming Language][1]
 
@@ -18,12 +15,12 @@ paper review 63 [An Overview of the Scala Programming Language][1]
 
 * Scala所有的类都继承自类 `Scala.Any`. 
 * Any 的所有子类分成两类: 值类继承自 `scala.AnyVal` ，引用类继承自 `scala.AnyRef`. 
-* 每一个Java的primitive类型都对应一个值类, 并且都映射到一个预先定义好的类型别名。在Java中, AnyRef 等同于 java.lang.Object.
+* 每一个Java的primitive类型都对应一个值类, 并且都映射到一个预先定义好的类型别名。AnyRef 等同于 java.lang.Object.
 
 ####63.1.2 Operations
 
 {% highlight scala %}
-abstract class Nat {  def isZero: boolean  def pred: Nat  def succ: Nat = new Succ(this) 
+abstract class Nat {  def isZero: Boolean  def pred: Nat  def succ: Nat = new Succ(this) 
   def + (x: Nat): Nat = if (x.isZero) this else succ + x.pred 
   def - (x: Nat): Nat = if (x.isZero) this else pred - x.pred 
 }
@@ -32,19 +29,19 @@ abstract class Nat {  def isZero: boolean  def pred: Nat  def succ: Nat = new
 现在我们继承类 Nat 实现一个单例对象 Zero 和一个子类 Succ.
 
 {% highlight scala %}
-object Zero extends Nat {  def isZero: boolean = true  def pred: Nat = throw new Error("Zero.pred") 
+object Zero extends Nat {  def isZero: Boolean = true  def pred: Nat = throw new Error("Zero.pred") 
   override def toString: String = "Zero"}
-class Succ(n: Nat) extends Nat {  def isZero: boolean = false  def pred: Nat = n  override def toString: String = "Succ("+n+")"}
+class Succ(n: Nat) extends Nat {  def isZero: Boolean = false  def pred: Nat = n  override def toString: String = "Succ("+n+")"}
 {% endhighlight %}
 
-在Scala中, 构造函数的参数紧跟在类名之后;可以看到在类Succ中没有单独的构造函数定义体存在。 此构造函数被称为 `primary constructor`; 类中的所有语句在类被实例化调用rimary constructor的时候即执行了。当需要多于一个构造函数的情况时，可以使用 `secondary constructors` 。
+在Scala中, 构造函数的参数紧跟在类名之后;可以看到在类Succ中没有单独的构造函数定义体存在。 此构造函数被称为 `primary constructor`; 类中的所有语句在类被实例化调用primary constructor的时候即执行了。当需要多于一个构造函数的情况时，可以使用 `secondary constructors` 。
 
 ####63.1.3 Variables and Properties
 
 Scala按如下方式定义 setter 和 getter 方法。
 
 {% highlight scala %}
-def x: Tdef x_= (newval: T): unit
+def x: Tdef x_= (newval: T): Unit
 {% endhighlight %}
 
 ##63.2 Operations Are Objects
@@ -52,18 +49,18 @@ def x: Tdef x_= (newval: T): unit
 ####63.2.1 Methods are Functional Values
 
 {% highlight scala %}
-def exists[T](xs: Array[T], p: T => boolean) = { 
-  var i: int = 0  while (i < xs.length && !p(xs(i))) i = i + 1  i < xs.length}
+def exists[T](xs: Array[T], p: T => Boolean) = { 
+  var i: Int = 0  while (i < xs.length && !p(xs(i))) i = i + 1  i < xs.length}
 {% endhighlight %}
 
 类型p 是函数类型T => boolean, 它定义定义域为T且值为boolean的所有函数。使用函数为参数或者返回函数的所有函数被称为 `higher-order functions`:
 
 {% highlight scala %}
-def forall[T](xs: Array[T], p: T => boolean) = { 
+def forall[T](xs: Array[T], p: T => Boolean) = { 
   def not_p(x: T) = !p(x)  !exists(xs, not_p)}
 {% endhighlight %}
 
-可以定义没有名字的函数:
+可以定义匿名的函数:
 
 {% highlight scala %}
 def forall[T](xs: Array[T], p: T => boolean) = !exists(xs, (x: T) => !p(x))
@@ -72,8 +69,8 @@ def forall[T](xs: Array[T], p: T => boolean) = !exists(xs, (x: T) => !p(x))
 这里, (x: T) => !p(x) 被定义为 `anonymous function` 。使用 exists 和 forall, 我们可以定义函数 hasZeroRow：
 
 {% highlight scala %}
-def hasZeroRow(matrix: Array[Array[int]]) = 
-  exists(matrix, (row: Array[int]) => forall(row, 0 ==))
+def hasZeroRow(matrix: Array[Array[Int]]) = 
+  exists(matrix, (row: Array[Int]) => forall(row, 0 ==)) //compile error!
 {% endhighlight %}
 
 ####63.2.2 Functions are Objects
@@ -84,25 +81,25 @@ package scalaabstract class Function1[-S, +T] {  def apply(x: S): T
 }
 {% endhighlight %}
 
-In general, the n-ary function type, (T1, T2, ..., Tn) => T is interpreted as Functionn[T1, T2, ..., Tn, T]. Hence, functions are interpreted as objects with apply methods. For example, the anonymous “incrementer” function x: int => x + 1 would be expanded to an instance of Function1 as follows.
+一般情况下，n元函数类型，(T1, T2, ..., Tn) => T，被认为是 Functionn[T1, T2, ..., Tn, T]。即，函数被认为是带有apply方法的对象。例如，匿名函数“incrementer” x: int => x + 1 将被扩展成如下Function1 的一个实例。
 
 {% highlight scala %}
-new Function1[int, int] {  def apply(x: int): int = x + 1}
+new Function1[int, Int] {  def apply(x: Int): Int = x + 1}
 {% endhighlight %}
 
 ####63.2.3 Refining Functions
-Class Array[T] inherits from Function1[int, T], and adds methods for array update and array length, among others:
+类Array[T]继承自Function1[int, T], 并加入方法用于更新数组和得到数组大小:
 
 {% highlight scala %}
-package scalaclass Array[T] extends Function1[int, T]                    with Seq[T] { 
-  def apply(index: int): T = ...  def update(index: int, elem: T): unit= ... 
-  def length: int = ...
-  def exists(p: T => boolean): boolean = ... 
-  def forall(p: T => boolean): boolean = ... 
+package scalaclass Array[T] extends Function1[Int, T]                    with Seq[T] { 
+  def apply(index: Int): T = ...  def update(index: Int, elem: T): Unit = ... 
+  def length: Int = ...
+  def exists(p: T => Boolean): Boolean = ... 
+  def forall(p: T => Boolean): Boolean = ... 
   ...}
 {% endhighlight %}
 
-Special syntax exists for function applications appearing on the left-hand side of an assignment; these are interpreted as applications of an update method. For instance, the assignment a(i) = a(i) + 1 is interpreted as
+在函数中，update方法用于赋值等号左侧。例如，赋值语句a(i) = a(i) + 1 被解释为
 
     a.update(i, a.apply(i) + 1) .
 
