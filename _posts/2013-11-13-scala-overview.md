@@ -103,19 +103,14 @@ package scalaclass Array[T] extends Function1[Int, T]                    with 
 
     a.update(i, a.apply(i) + 1) .
 
-The above definition of the Array class also lists methods exists and forall. Hence, it would not have been necessary to define these operations by hand:
-
-{% highlight scala %}
-def hasZeroRow(matrix: Array[Array[int]]) = 
-  matrix exists (row => row forall (0 ==))
-{% endhighlight %}
-
 ####63.2.4 Sequences
 
 {% highlight scala %}
-def sqrts(xs: List[double]): List[double] = 
-  xs filter (0 <=) map Math.sqrt
+def sqrts(xs: List[Double]): List[Double] =
+    xs.filter(0 <=).map(Math.sqrt)
 {% endhighlight %}
+
+这里`filter`过滤掉了小于0的数。
 
 ####63.2.5 For Comprehensions
 {% highlight scala %}
@@ -123,24 +118,29 @@ def sqrts(xs: List[double]): List[double] =
   for (val x <- xs; 0 <= x) yield Math.sqrt(x)
 {% endhighlight %}
 
-Here, val x <- xs is a `generator`, which produces a sequence of values, and 0 <= x is a `filter`, which eliminates some of the produced values from consideration. The comprehension returns another sequence formed from the values produced by the yield part.
+这里, val `x <- xs` 是一个 `generator`, 它会产生一组序列, `0 <= x` 是一个 `filter`, 它把小于0的值过滤掉。 最终由`yeild`产生一个新的序列。
 
 ##63.3 Abstraction
 
 ####63.3.1 Functional Abstraction
 
 {% highlight scala %}
-class GenCell[T](init: T) {  private var value: T = init  def get: T = value  def set(x: T): unit = { value = x }}
-def swap[T](x: GenCell[T], y: GenCell[T]): unit = { 
-  val t = x.get; x.set(y.get); y.set(t)
+class GenCell[T](init: T) {
+    private var value: T = init
+    def get: T = value
+    def set(x: T): Unit = { value = x }
 }
 
-val x: GenCell[int] = new GenCell[int](1) 
-val y: GenCell[int] = new GenCell[int](2) 
-swap[int](x, y)
+def swap[T](x: GenCell[T], y: GenCell[T]): Unit = {
+    val t = x.get; x.set(y.get); y.set(t)
+}
+
+val x: GenCell[Int] = new GenCell[Int](1)
+val y: GenCell[Int] = new GenCell[Int](2)
+swap[Int](x, y)
 {% endhighlight %}
 
-Type arguments of a method or constructor are **inferred from the expected result type and the argument types by local type inference**. Hence, one can equivalently write the example above without any type arguments:
+类的方法和构造函数的类型参数对应的实际类型，可以通过局部类型推理（`local type inference`）根据预期的返回值以及参数类型推理出来。因此，上面的程序可以写成这种省略参数类型的方式：:
 
 {% highlight scala %}
 val x = new GenCell(1) 
@@ -148,15 +148,15 @@ val y = new GenCell(2)
 swap(x, y)
 {% endhighlight %}
 
-**Parameter bounds.**
+受限类型参数
 
 {% highlight scala %}
-trait Ordered[T] {  def < (x: T): boolean}
-def updateMax[T <: Ordered[T]](c: GenCell[T], x: T) = 
+trait Ordered[T] {  def < (x: T): Boolean}def updateMax[T <: Ordered[T]](c: GenCell[T], x: T) = 
   if (c.get < x) c.set(x)
 {% endhighlight %}
 
-Here, the type parameter clause [T <: Ordered[T]] introduces a `bounded type parameter` T. It restricts the type arguments for T to those types T that are a subtype of Ordered[T].
+这里，类型参数定义子句[T <: Ordered[T]]引入了受限类型参数T(`bounded type parameter`)，它限定参数类型T必须是Ordered[T]的子类型。这样，“<”操作符就可以应用于类型为T的参数了。同时，这个例子还展现出一个受限参数类型本身可以作为其限定类型的一部分，也就是说Scala支持F-受限多态（`F-bounded polymorphism`）。
+
 
 **Variance**. The combination of subtyping and generics in a language raises the question how they interact. If C is a type constructor and S is a subtype of T, does one also have that C[S] is a subtype of C[T]? Type constructors with this property are called `covariant`.
 
