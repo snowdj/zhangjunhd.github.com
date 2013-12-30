@@ -157,17 +157,16 @@ trait Ordered[T] {  def < (x: T): Boolean}def updateMax[T <: Ordered[T]](c: 
 
 这里，类型参数定义子句[T <: Ordered[T]]引入了受限类型参数T(`bounded type parameter`)，它限定参数类型T必须是Ordered[T]的子类型。这样，“<”操作符就可以应用于类型为T的参数了。同时，这个例子还展现出一个受限参数类型本身可以作为其限定类型的一部分，也就是说Scala支持F-受限多态（`F-bounded polymorphism`）。
 
+协变性（`Variance`）泛型和子类型（`subtyping`）组合在一起产生这样一个问题：它们如何相互作用。如果C是一个类型构造子（`type constructor`），S是T的一个子类，那么C[S]是不是也是C[T]的子类呢？我们把有这种特性的类型构造子称为协变的（`covariant`）。
 
-**Variance**. The combination of subtyping and generics in a language raises the question how they interact. If C is a type constructor and S is a subtype of T, does one also have that C[S] is a subtype of C[T]? Type constructors with this property are called `covariant`.
-
-Scala allows to declare the variance of the type parameters of a class using plus or minus signs. A "+" in front of a parameter name indicates that the constructor is `covariant` in the parameter, a "−" indicates that it is `contravariant`, and a missing prefix indicates that it is `non-variant`.
+Scala允许通过“+/-”定义类型参数的协变性，用“+”放在类型参数前表示构造子对于该参数是协变的(`covariant`)，“-”则表示逆协变(`contravariant`)，没有任何符号则表示非协变(`non-variant`)。
 
 {% highlight scala %}
 abstract class GenList[+T] { 
-  def isEmpty: boolean  def head: T  def tail: GenList[T]}
+  def isEmpty: Boolean  def head: T  def tail: GenList[T]}
 {% endhighlight %}
 
-**Binary methods and lower bounds**.
+二元操作(`Binary methods`)和参数下界(`lower bounds`)。为GenList类增加一个prepend（前追加）方法，最自然的做法是将其定义成为接收一个相应的list元素类型参数：
 
 {% highlight scala %}
 abstract class GenList[+T] { ...
@@ -176,33 +175,35 @@ abstract class GenList[+T] { ...
 }
 {% endhighlight %}
 
-However, this is not type-correct, since now the type parameter T appears in contravariant position inside class GenList. Therefore, it may not be marked as covariant. This is a pity since conceptually immutable lists should be covariant in their element type. The problem can be solved by generalizing prepend using a lower bound:
+可惜这样做会导致类型错误，因为这种定义使得T在GenList中处于逆协变的位置，从而不能标记为协变参数（+T）。这一点非常遗憾，因为从概念上说不可变的list对于其元素类型而言应该是协变的，不过这个问题可以通过参数下界对prepend方法进行泛化而解决：
 
 {% highlight scala %}
 abstract class GenList[+T] { ...  def prepend[S >: T](x: S): GenList[S] = // OK    new Cons(x, this) 
 }
 {% endhighlight %}
 
-prepend is now a polymorphic method which takes an argument **of some supertype S** of the list element type, T. It returns a list with elements of that supertype.
+这里prepend是一个多态方法，接收T的某个父类型S作为参数，返回元素类型为S的list。这个定义是合法的，因为参数下界被归类为协变位置，从而T在GenList中只出现在协变位置上。
 
 ####63.3.2 Abstract Members
 
 {% highlight scala %}
 abstract class AbsCell { 
-  type T  val init: T  private var value: T = init  def get: T = value  def set(x: T): unit = { value = x }}
-val cell = new AbsCell { type T = int; val init = 1 } 
+  type T  val init: T  private var value: T = init  def get: T = value  def set(x: T): Unit = { value = x }}
+val cell = new AbsCell { type T = Int; val init = 1 } 
 cell.set(cell.get * 2)
 {% endhighlight %}
 
-**Path-dependent types**. It is also possible to access AbsCell without knowing the binding of its type member.
+这里，cell的类型是AbsCell { type T = Int }，也就是AbsCell被{ type T = Int }细化（`refinement`）而形成的类型。访问cell值的代码认为其类型别名cell.T=int，因此上面第二条语句是合法的。
+
+路径依赖类型（`Path-dependent types`） 不知道AbsCell绑定的类型情况下，也可以对其进行访问。下面这段代码将一个cell的值恢复成为其初始值（init），而无需关心cell值的类型是什么。
 
 {% highlight scala %}
-def reset(c: AbsCell): unit = c.set(c.init)
+def reset(c: AbsCell): Unit = c.set(c.init)
 {% endhighlight %}
 
-**Type selection and singleton types**. Outer # Inner, where Outer is the name of the outer class in which class Inner is defined. The "#" operator denotes a `type selection`.
+类型选择与单例类型（`Type selection and singleton types`），类型定义可以嵌套，在Scala中，通过“外部类型#内部类型”（Outer#Inner）的方式来表示，“#”就称作类型选择（Type Selection）。从概念上说，这与路径依赖类型（例如：p.Inner）不同，因为p是一个值，不是一个类型。进一步而言，Outer#t也是一个无效表达式，如果t是一个定义在Outer中的抽象类型的话。
 
-In fact, `path dependent types` in Scala can be expanded to type selections. The path dependent type p.t is taken as a shorthand for p.type # t. Here, p.type is a `singleton type`, which represents just the object denoted by p.
+实际上，路径依赖类型（`path dependent types`）可以被扩展成为类型选择，p.t可以看做是p.type#t，这里p.type就称作单例类型（`singleton type`），仅代表p所指向对象的类型。单例类型本身对于支持方法调用串接很有作用，考虑如下代码：C有一个incr方法，对其值+1，其子类D由一个decr方法，对其值-1。
 
 {% highlight scala %}
 class C {  protected var x = 0  def incr: this.type = { x = x + 1; this }}
@@ -212,20 +213,22 @@ class C {  protected var x = 0  def incr: this.type = { x = x + 1; this }}
 val d = new D; 
 d.incr.decr{% endhighlight %}
 
-Without the singleton type this.type, this would not have been possible, since d.incr would be of type C, which does not have a decr member. 
+如果没有this.type这个单例类型，上述调用是非法的，因为d.incr的类型应该是C，但C并没有decr方法。
 
-**Family polymorphism and self types**.
+族多态（`Family polymorphism`)和self类型(`self types`）。Scala的抽象类型概念非常适合于描述相互之间协变的一族（families）类型，这种概念称作族多态。
 
 {% highlight scala %}
 abstract class SubjectObserver {  type S <: Subject  type O <: Observer
   abstract class Subject requires S {    private var observers: List[O] = List() 
     def subscribe(obs: O) = observers = obs :: observers 
-    def publish = for (val obs <- observers) obs.notify(this)  }  trait Observer {    def notify(sub: S): unit  }}
+    def publish = for (val obs <- observers) obs.notify(this)  }  trait Observer {    def notify(sub: S): Unit  }}
 {% endhighlight %}
+
+Subject和Observer并没有直接引用对方，因为这种“硬”引用将会影响客户代码对这些类进行协变的扩展。相反，SubjectOberver定义了两个抽象类型S和O，分别以Subject和Observer作为上界。Subject和observer的类型分别通过这两个抽象类型引用对方。
 
     abstract class Subject requires S { ...
 
-Here, S is called a `self-type` of class Subject. When a self-type is given, it is taken as the type of this inside the class (without a self-type annotation the type of this is taken as usual to be the type of the class itself). In class Subject, the self-type is necessary to render the call obs.notify(this) type-correct.
+这个标注表示Subject类只能作为S的某个子类被实例化，这里S被称作Subject的`self-type`。在定义一个类的时候，如果指定了`self-type`，则这个类定义中出现的所有this都被认为属于这个`self-type`类型，否则被认为是这个类本身。在Subject类中，必须将`self-type`指定为S，才能保证obs.notify(this)调用类型正确。
 
 {% highlight scala %}
 object SensorReader extends SubjectObserver { 
@@ -239,7 +242,7 @@ object SensorReader extends SubjectObserver {
   class Display extends Observer {    def println(s: String) = ... 
     def notify(sub: Sensor) =    println(sub.label + " has value " + sub.value) 
   }}
-object Test {  import SensorReader._  val s1 = new Sensor { val label = "sensor1" } 
+object Test {  import SensorReader._  val s1 = new Sensor { val label = "sensor1" } 
   val s2 = new Sensor { val label = "sensor2" } 
   
   def main(args: Array[String]) = {    val d1 = new Display
@@ -251,9 +254,9 @@ object SensorReader extends SubjectObserver {
 
 ####63.3.3 Modeling Generics with Abstract Types
 
-Assume you have a parameterized class C with a type parameter t (the encoding generalizes straightforwardly to multiple type parameters). The encoding has four parts, which affect the class definition itself, instance creations of the class, base class constructor calls, and type instances of the class.
+用抽象类型建立泛型模型。假定一个参数化类型C有一个类型参数t（可以直接推广到多个类型参数的情况），那么这种表达方式有四个关键组成部分：分别是类型自身的定义、类型实例的创建、基类构造子的调用以及这个类的类型实例（type instances）。
 
-1. The class definition of C is re-written as follows.
+* 类型定义，C的定义可以重写如下：
 
 {% highlight scala %}
 class C {
@@ -262,22 +265,22 @@ class C {
 }
 {% endhighlight %}
 
-2. Every instance creation new C[T] with type argument T is rewritten to:
+* 以T为参数创建实例的调用：new C[T]可以写成：
 
 {% highlight scala %}
 new C { type t = T }
 {% endhighlight %}
 
-3. If C[T] appears as a superclass constructor, the inheriting class is augmented with the definition
+* 如果C[T]出现在调用基类构造符的场合，则其子类的定义将会进行如下扩充：
 
 {% highlight scala %}
 type t = T
 {% endhighlight %}
 
-4. Every type C[T] is rewritten to one of the following types which each augment class C with a refinement.
+* 每一个C[T]形式的类型定义都被扩充为如下的细化形式：
 
 {% highlight scala %}
-C  { type t = T } //if t is declared non-variant,
+C { type t = T } //if t is declared non-variant,
 C { type t <: T } //if t is declared co-variant,
 C { type t >: T } //if t is declared contra-variant.{% endhighlight %}
 
@@ -294,16 +297,16 @@ see [Scalable Component Abstractions][2] 62.2 for
 
 {% highlight scala %}
 abstract class Term { 
-  def eval: int}class Num(x: int) extends Term {  def eval: int = x 
-}class Plus(left: Term, right: Term) extends Term { 
+  def eval: int}class Num(x: int) extends Term {  def eval: int = x 
+}
+class Plus(left: Term, right: Term) extends Term { 
   def eval: int = left.eval + right.eval}
 {% endhighlight %}
 
 ####63.5.2 Pattern Matching Over Class Hierarchies
 
 {% highlight scala %}
-abstract class Termcase class Num(x: int) extends Termcase class Plus(left: Term, right: Term) extends Term
-object Interpreter {  def eval(term: Term): int = term match {    case Num(x) => x    case Plus(left, right) => eval(left) + eval(right) 
+abstract class Termcase class Num(x: int) extends Termcase class Plus(left: Term, right: Term) extends Termobject Interpreter {  def eval(term: Term): int = term match {    case Num(x) => x    case Plus(left, right) => eval(left) + eval(right) 
   }}
 {% endhighlight %}
 
@@ -320,27 +323,25 @@ abstract class Termcase class Num(x: int) extends Termcase class Plus(left: Te
 abstract class SemiGroup[a] { 
   def add(x: a, y: a): a}
 abstract class Monoid[a] extends SemiGroup[a] { 
-  def unit: a}
-object Monoids {  object stringMonoid extends Monoid[String] {    def add(x: String, y: String): String = x.concat(y) 
+  def unit: a}object Monoids {  object stringMonoid extends Monoid[String] {    def add(x: String, y: String): String = x.concat(y) 
     def unit: String = ""  }  object intMonoid extends Monoid[int] {    def add(x: Int, y: Int): Int = x + y    def unit: Int = 0 
   }}
-def sum[a](xs: List[a])(m: Monoid[a]): a = 
+def sum[a](xs: List[a])(m: Monoid[a]): a = 
   if (xs.isEmpty) m.unit  else m.add(xs.head, sum(xs.tail)(m))
 {% endhighlight %}
 
-One invokes this sum method by code such as:
+按如下形式调用sum方法:
 
 {% highlight scala %}
 sum(List("a", "bc", "def"))(Monoids.stringMonoid)
 sum(List(1, 2, 3))(Monoids.intMonoid)
 {% endhighlight %}
 
-**Implicit Parameters: The Basics**. We would sometimes wish that the system could figure out the correct arguments automatically, similar to what is done when type arguments are inferred. This is what implicit parameters provide.
+`Implicit Parameters`: 
 
 {% highlight scala %}
 def sum[a](xs: List[a])(implicit m: Monoid[a]): a = 
-  if (xs.isEmpty) m.unit  else m.add(xs.head, sum(xs.tail))
-implicit object stringMonoid extends Monoid[String] { 
+  if (xs.isEmpty) m.unit  else m.add(xs.head, sum(xs.tail))implicit object stringMonoid extends Monoid[String] { 
   def add(x: String, y: String): String = x.concat(y) 
   def unit: String = ""}implicit object intMonoid extends Monoid[int] {  def add(x: Int, y: Int): Int = x + y  def unit: Int = 0 
 }
@@ -379,8 +380,7 @@ sort(yss)((xs: List[int]) => list2ordered[int](xs)(int2ordered))
 
 {% highlight scala %}
 trait Set[T] {  def include(x: T): Set[T] 
-  def contains(x: T): boolean}
-implicit def listToSet[T](xs: GenList[T]): Set[T] = new Set[T] {  def include(x: T): Set[T] = 
+  def contains(x: T): boolean}implicit def listToSet[T](xs: GenList[T]): Set[T] = new Set[T] {  def include(x: T): Set[T] = 
     xs prepend x  def contains(x: T): boolean =    !isEmpty && (xs.head == x || (xs.tail contains x))}
 {% endhighlight %}
 
