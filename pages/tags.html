@@ -9,7 +9,7 @@ title  : tags
  {% for tag in site.tags %} 
  <li>
  	<a href="#{{ tag[0] }}-ref">{{ tag[0] }} </a>
- 	{%if tag[1].size > 10 %}
+ 	{%if tag[1].size > 15 %}
  	<span class="badge badge-important">{{ tag[1].size }}</span>
  	
  	{% else %}
