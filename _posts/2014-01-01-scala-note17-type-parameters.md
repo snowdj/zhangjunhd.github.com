@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "scala笔记17-类型参数"
-description: "scala笔记17-类型参数"
+title: "scala笔记17-类型参数与隐式转换"
+description: "scala笔记17-类型参数，隐式转换"
 category: 编程
 tags: [scala]
 ---
@@ -211,4 +211,55 @@ def makeFriends(p : Pair[_ :< Person]) // could call Pair[Student]
 
 import java.util.Comparator
 def min[T](p : Pair[T])(comp: Comparator[_ >: T])
+{% endhighlight %}
+
+####隐式转换
+所谓`隐式转换函数`(implicit conversion function)指的是那种以implicit关键字声明的带有单个参数的函数。
+{% highlight scala %}
+implicit def int2Frac(n:Int) = Fraction(n,1)
+val res = 3 * Fraction(4,5) // call Fraction(3)
+{% endhighlight %}
+
+scala会考虑如下的隐式转换函数：
+
+* 位于源或目标类型的伴生对象中的隐式函数(我们可以把int2Frac放到Fraction的伴生对象中)
+* 位于当前作用域可以以单个标识符指代的隐式函数(如`import scala.collection.JavaConversions._`)
+
+隐式转换在如下三种情况下被考虑：
+
+* 当表达式的类型与预期的类型不同,`sqrt(Fraction(1,4)) `，将调用frac2Double，因为sqrt预期的是一个Double
+* 当对象访问一个不存在的成员时,`new File("j.txt").read`,将调用file2RichFile，因为File没有read方法
+* 当对象调用某个方法，而该方法的参数声明与传入的参数不匹配时,`3 * Fraction(4,5)`,将调用int2Frac，因为Int的*方法不接受Fraction作为参数
+
+####隐式参数
+函数或方法可以带有一个标记为impilicit的参数列表。在这种情况下，编译器将会查找缺省值，提供给该函数或方法。编译器会在如下两个地方查找:
+
+* 在当前作用域所有可以用单个标识符指代的满足类型要求的val和def
+* 与所要求类型相关联的类型的伴生对象。相关联的类型包括所要求类型本身，以及它的类型参数(如果它是一个参数化的类型的话)
+{% highlight scala %}
+case class Delimiters(left:String, right:String)
+
+object Main {
+  implicit val quoteDelim = Delimiters("(", ")")
+    
+  def quote(what:String)(implicit delims:Delimiters) = delims.left + what + delims.right
+    
+  quote("Hi")(Delimiters("<", ">")) // 柯里化
+  quote("Hi") //尝试查找Delimiters的隐式值
+} 
+{% endhighlight %}
+
+隐式的函数参数也可以被用做隐式转换。参考上面`上下文界定`中的内容。
+{% highlight scala %}
+def smaller[T](a:T, b:T) = if (a < b) a else b //Error!!!    
+def smaller[T](a:T, b:T)(implicit order: T => Ordered[T]) = if (a < b) a else b
+{% endhighlight %}
+
+在上面`约束类型`中也使用了隐式参数，=:=,<:<,<%<是带有隐式值的类，定义在Predef对象中。 <:<从本质上将就是:
+{% highlight scala %}
+abstract class <:<[-From, +To] extends Function1[From, To]
+
+object <:< {
+  implicit def conforms[A] = new (A <:< A) {def apply(x:A) = x}
+}
 {% endhighlight %}
