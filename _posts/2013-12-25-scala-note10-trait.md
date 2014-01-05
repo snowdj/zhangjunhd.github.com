@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Scala笔记10-特质trait"
+title: "Scala笔记10-特质"
 description: "Scala笔记10-特质"
 category: 编程
 tags: [scala]

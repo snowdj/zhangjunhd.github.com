@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Scala笔记5-类Class"
+title: "Scala笔记5-类"
 description: "Scala笔记5-类"
 category: 编程
 tags: [scala]

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Scala笔记2-控制结构与函数condition and function"
+title: "Scala笔记2-控制结构与函数"
 description: "Scala笔记2-控制结构与函数"
 category: 编程
 tags: [scala]
@@ -21,13 +21,16 @@ object Main extends App {
   val s = "Hello"
   
   for (i <- 0 to s.length - 1)
-    print(s(i))
+    print(s(i)) //Hello
 
   for (i <- 0 until s.length)
-    print(s(i))
+    print(s(i)) //Hello
     
   for (c <- s)
-    print(c)
+    print(c) //Hello
+  
+  for (i <- s.length - 1 to (0, -1))
+    print(s(i)) // olleH
 }
 {% endhighlight %}
 

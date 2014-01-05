@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Scala笔记7-文件操作File"
+title: "Scala笔记7-文件操作"
 description: "Scala笔记7-文件读写，序列化"
 category: 编程
 tags: [scala]

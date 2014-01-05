@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Scala笔记4-映射与元组Map and Tuple"
+title: "Scala笔记4-映射与元组"
 description: "Scala笔记4-映射与元组"
 category: 编程
 tags: [scala]

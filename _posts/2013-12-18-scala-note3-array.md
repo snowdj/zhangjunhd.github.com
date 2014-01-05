@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Scala笔记3-数组array"
+title: "Scala笔记3-数组"
 description: "Scala笔记3-数组，与Java互操作"
 category: 编程
 tags: [scala]

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Scala笔记6-枚举Enumeration"
+title: "Scala笔记6-枚举"
 description: "Scala笔记6-枚举"
 category: 编程
 tags: [scala]
