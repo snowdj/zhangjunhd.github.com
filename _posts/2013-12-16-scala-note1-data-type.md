@@ -61,7 +61,77 @@ object Main extends App {
   val amOrPm = amPmFormat.format(today)           // String = PM
 }
 {% endhighlight %}
-   
+
+####String
+一些常用的String 操作:
+{% highlight scala %}
+object Run extends App {
+  var str = "%s %.2f, and %d".format("s", .1, 1) // s 0.10, and 1
+  
+  // Simple string interpolation
+  val name = "Jeff"
+  println(s"Hello, $name") // Hello, Jeff
+  val age = 18
+  println(s"Hello, $name, age $age") // Hello, Jeff, age 18
+
+  val arr = Array("Hello", "world", "it's", "me")
+  str = arr.mkString(",") // Hello,world,it's,me
+  str = arr.mkString(" ") // Hello world it's me
+
+  str = "foo\n"
+  val str2 = "bar"
+  str + str2 //foo
+             // bar
+    
+  str.stripLineEnd + str2 // foobar
+
+  // scala的String判等直接用==
+  val s1 = "Hello"
+  val s2 = "Hello"
+  val s3 = "Goodbye"
+  val s4: String = null
+  val s5 = "H" + "ello"
+
+  if (s1 == s2) println("s1 == s2, good")
+  if (s1 == s3) println("s1 == s3, bad")
+  if (s1 == s4) println("s1 == s4, bad")
+  if (s1 == s5) println("s1 == s5, good")
+  
+  "hello world".count(_ == 'o') // 2
+  "hello world".split(" ") // Array[java.lang.String] = Array(hello, world)
+  "hello world".split(" ").foreach(println) // hello
+                                            // world
+  "hello world".split(" ").map(_.length) //  Array[Int] = Array(5, 5)
+  "hello world".split("\\s+") // Array[java.lang.String] = Array(hello, world)
+  "hello world".distinct // helo wrd
+  val a = "hello"
+  val b = "world"
+  a.diff(b) // hel
+  b.diff(a) // wrd
+  a.intersect(b) // lo
+  b.intersect(a) // ol
+  
+  ("hello".take(3), "hello".drop(3), "hello".takeRight(3), "hello".dropRight(3)) // (hel,lo,llo,he)
+  // the same as
+  ("hello".substring(0, 3), "hello".substring(3), "hello".substring(2), "hello".substring(0, 2))
+}
+{% endhighlight %}
+
+产生random String:
+{% highlight scala %}
+import scala.util.Random
+
+object Run extends App {
+  val r = new Random(31) // scala.util.Random = scala.util.Random@7d49fa1e
+  r.nextString(10) // String = 빶絒釰핶ಧᡴ♜옹坤ꗓ
+    
+  Random.nextString(5) // String = 粓沗䛄㶒፼
+    
+  val x = Random.alphanumeric // scala.collection.immutable.Stream[Char] = Stream(Q, ?)
+  x.take(10).foreach(print) // UmbfYuJZeE
+}
+{% endhighlight %}
+
 ####类型检查与转换
     
     Scala                  Java

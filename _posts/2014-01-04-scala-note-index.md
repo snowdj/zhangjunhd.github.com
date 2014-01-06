@@ -10,8 +10,9 @@ tags: [scala]
 * [Scala笔记1-基本类型](http://zhangjunhd.github.io/2013/12/16/scala-note1-data-type.html)
   * Scala基本类型
   * Scala BigDecimal
-  * 乘方，素数，随机数
+  * 乘方，素数，随机数(`Random`)
   * Scala date/time
+  * Scala String(`format`, `mkString`,`mkString`, `stripLineEnd`, `==`, `count`, `split`, `foreach(println)`, `distinct`, `diff`, `intersect`, `take`, `drop`, `takeRight`, `dropRight`, `substring`)
   * 类型检查与转换(`isInstanceOf`, `asInstanceOf`, `classOf`)
 * [Scala笔记2-控制结构与函数](http://zhangjunhd.github.io/2013/12/17/scala-note2-condition-and-function.html)
   * `for`
@@ -23,7 +24,7 @@ tags: [scala]
   * `Array`
   * `ArrayBuffer`
   * `数组遍历`
-  * 常用算法(`sum`,`min`,`max`,`count`,`sort`,`mkString`)
+  * 常用算法(`sum`,`min`,`max`,`count`,`sort`)
   * 多维数组
   * 与Java互操作(`JavaConversions.bufferAsJavaList`)
 * [Scala笔记4-映射与元组](http://zhangjunhd.github.io/2013/12/19/scala-note4-map-and-tuple.html)

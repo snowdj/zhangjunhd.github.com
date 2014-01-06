@@ -248,6 +248,25 @@ scores.get("Alice") match {
 }
 {% endhighlight %}
 
+一个String转Int的例子:
+{% highlight scala %}
+object Run extends App {
+  def toInt(s: String):Option[Int] = {
+    try {
+      Some(s.toInt)
+    } catch {
+      case e:Exception => None
+    }
+  }
+  
+  val x = toInt("10") // Option[Int] = Some(10)
+  val x2 = toInt("foo") // Option[Int] = None
+  
+  x.getOrElse(0) // 10
+  x2.getOrElse(0) // 0
+}
+{% endhighlight %}
+
 ####偏函数
 被包在花括号内的一组case语句是一个偏函数。偏函数是一个并非对所有输入值都有定义的函数，是PartialFunction[A, B]类的一个实例，其中A是参数类型，B是返回类型。该类有两个方法：apply方法从匹配的模式计算函数值；isDefinedAt方法在输入至少匹配其中一个模式时返回true。
 {% highlight scala %}

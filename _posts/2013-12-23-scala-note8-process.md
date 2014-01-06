@@ -47,3 +47,23 @@ object Run extends App {
   "echo 42" #| p !
 }
 {% endhighlight %}
+
+重定向标准输出和错误输出流:
+
+{% highlight scala %}
+import sys.process._
+
+object Run extends App {
+  val logger = ProcessLogger(
+    (o: String) => println("out " + o),
+    (e: String) => println("err " + e))
+  "ls -al" ! logger
+
+  val out = new StringBuilder
+  val err = new StringBuilder
+  val strlogger = ProcessLogger(
+    (o: String) => out.append(o),
+    (e: String) => err.append(e))
+  "ls -al" ! strlogger
+}
+{% endhighlight %}
