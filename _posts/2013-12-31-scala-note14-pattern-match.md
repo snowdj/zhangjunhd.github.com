@@ -267,6 +267,29 @@ object Run extends App {
 }
 {% endhighlight %}
 
+Either和Option的用法很类似:
+
+ * Either就像是Option
+ * Right就像是Some
+ * Left就像是None,但是它额外的包含了一个内容让你解释问题.
+
+{% highlight scala %}
+object Run extends App {
+  def toInt(s: String):Either[String, Int] = {
+    try {
+      Right(s.toInt)
+    } catch {
+      case e:Exception => Left(e.getMessage())
+    }
+  }
+
+  toInt("10") match {
+    case Left(s) => println("Answer: " + s)
+    case Right(i) => println("Answer: " + i)
+  }
+}
+{% endhighlight %}
+
 ####偏函数
 被包在花括号内的一组case语句是一个偏函数。偏函数是一个并非对所有输入值都有定义的函数，是PartialFunction[A, B]类的一个实例，其中A是参数类型，B是返回类型。该类有两个方法：apply方法从匹配的模式计算函数值；isDefinedAt方法在输入至少匹配其中一个模式时返回true。
 {% highlight scala %}

@@ -137,6 +137,25 @@ class Person(name: String, age: Int) {
 
 上述代码声明并初始化不可变字段name和age，而这两个字段是对象私有的。效果等同于private[this] val。
 
+`private主构造器`的例子:
+
+{% highlight scala %}
+object PrivateConstructorTests {
+  def main(args: Array[String]) {
+    val o = new Order  // this won't compile
+  }
+}
+
+// note the 'private' keyword here
+class Order private() {
+  
+  def this(orderId: Long) {
+    this();
+    // more code here ...
+  }
+}
+{% endhighlight %}
+
 `嵌套类`
 
 {% highlight scala %}

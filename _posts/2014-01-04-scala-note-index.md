@@ -89,7 +89,7 @@ tags: [scala]
   * 类型模式(match)
   * 提取器
   * 样例类(`copy`)
-  * Option
+  * Option类型(`Option`,`Some`,`None`, `Either`, `Left`, `Right`)
   * 偏函数
 * [scala笔记15-注解](http://zhangjunhd.github.io/2013/12/31/scala-note15-annotations.html)
 * [scala笔记16-xml](http://zhangjunhd.github.io/2014/01/01/scala-note16-xml.html)
