@@ -25,6 +25,8 @@ a & b & c \\
 d & e & f \\
 g & h & i \end{array} \right)\)`
 
-See details [Displaying a formula][1]
+* 维基百科 [Latex数学公式][2]
+* See details [Displaying a formula][1]
 
 [1]: http://en.wikipedia.org/wiki/Help:Displaying_a_formula
+[2]: http://zh.wikipedia.org/wiki/Help:MATH

@@ -23,7 +23,7 @@ tags: [scala]
 * [Scala笔记3-数组](http://zhangjunhd.github.io/2013/12/18/scala-note3-array.html)
   * `Array`
   * `ArrayBuffer`
-  * `数组遍历`
+  * 数组遍历
   * 常用算法(`sum`,`min`,`max`,`count`,`sort`)
   * 多维数组
   * 与Java互操作(`JavaConversions.bufferAsJavaList`)
