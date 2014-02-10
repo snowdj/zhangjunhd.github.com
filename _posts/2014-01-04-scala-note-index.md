@@ -92,7 +92,8 @@ tags: [scala]
   * Option类型(`Option`,`Some`,`None`, `Either`, `Left`, `Right`)
   * 偏函数
 * [scala笔记15-注解](http://zhangjunhd.github.io/2013/12/31/scala-note15-annotations.html)
-* [scala笔记16-xml](http://zhangjunhd.github.io/2014/01/01/scala-note16-xml.html)
+* [scala笔记16-xml](http://zhangjunhd.github.io/2014/01/01/scala-note16-xml.html) 
+* [scala Json](http://www.furida.mu/blog/2012/09/18/beautiful-json-parsing-in-scala/)  
 * [scala笔记17-类型参数与隐式转换](http://zhangjunhd.github.io/2014/01/01/scala-note17-type-parameters.html)
   * 类型变量界定
   * 视图界定
