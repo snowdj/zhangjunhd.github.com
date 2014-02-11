@@ -134,10 +134,10 @@ An `Event` is a unit of data that flows through a Flume agent. A `Source` consum
 [12]:http://whirr.apache.org/ "Apache whirr"
 [13]:http://mahout.apache.org/ "Apache Mahout"
 
-[20]:http://zhangjunhd.github.com/2013/02/24/apache-related-projects/
-[21]:http://zhangjunhd.github.com/2013/02/25/apache-hbase/
-[22]:http://zhangjunhd.github.com/2013/03/01/zookeeper/
-[23]:http://zhangjunhd.github.com/2013/03/03/pig/
-[24]:http://zhangjunhd.github.com/2013/03/04/oozie/
-[25]:http://zhangjunhd.github.com/2013/03/04/hive/
-[26]:http://zhangjunhd.github.com/2013/03/06/apache-related-projects2/
+[20]:http://zhangjunhd.github.com/2013/02/24/apache-related-projects.html
+[21]:http://zhangjunhd.github.com/2013/02/25/apache-hbase.html
+[22]:http://zhangjunhd.github.com/2013/03/01/zookeeper.html
+[23]:http://zhangjunhd.github.com/2013/03/03/pig.html
+[24]:http://zhangjunhd.github.com/2013/03/04/oozie.html
+[25]:http://zhangjunhd.github.com/2013/03/04/hive.html
+[26]:http://zhangjunhd.github.com/2013/03/06/apache-related-projects2.html
