@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Delay Scheduling"
-description: ""
+description: "延迟调度来满足data locality，总体效果会好很多"
 category: 云计算
 tags: [MapReduce, Hadoop]
 ---
@@ -9,27 +9,23 @@ tags: [MapReduce, Hadoop]
 
 paper review:[Delay Scheduling: A Simple Technique for Achieving Locality and Fairness in Cluster Scheduling](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.212.1524&rep=rep1&type=pdf)
 
-<!--break-->
+##1 Introduction
+Hadoop Fair Scheduler,HFS has two main goals
 
-##1. Introduction
-In this paper, we explore the problem of shar- ing a cluster between users while preserving the efficiency of systems like MapReduce – specifically, preserving data *locality*, the placement of computation near its input data.
+* `Fair sharing`: divide resources using max-min fair sharing to achieve statistical multiplexing. For example, if two jobs are running, each should get half the resources;if a third job is launched, each job’s share should be 33%
+* `Data locality`: place computations near their input data, to maximize system throughput.
 
-Hadoop Fair Scheduler,`HFS` has two main goals
+To achieve the first goal (fair sharing), a scheduler must reallocate resources between jobs when the number of jobs changes. A key design question is what to do with tasks (units of work that make up a job) from running jobs when a new job is submitted, in order to give resources to the new job. At a high level, two approaches can be taken
 
-* Fair sharing: divide resources using max-min fair sharing to achieve statistical multiplexing. For example, if two jobs are running, each should get half the resources;if a third job is launched, each job’s share should be 33%.
-* Data locality: place computations near their input data, to maximize system throughput. 
+* Kill running tasks to make room for the new job.
+* Wait for running tasks to finish.
 
-To achieve the first goal (fair sharing), a scheduler must reallocate resources between jobs when the number of jobs changes. A key design question is what to do with tasks (units of work that make up a job) from running jobs when a new job is submitted, in order to give resources to the new job. At a high level, two approaches can be taken
-
-* Kill running tasks to make room for the new job.
-* Wait for running tasks to finish.
-
-##3. Delay Scheduling
+##3 Delay Scheduling
 We relax fairness slightly through a simple algorithm called `delay scheduling`, in which a job waits for a limited amount of time for a scheduling opportunity on a node that has data for it. We show that a very small amount of waiting is enough to bring locality close to 100%.
-####3.1 Na ̈ıve Fair Sharing Algorithm
+####3.1 Naive Fair Sharing Algorithm
 ![algorithm1](/assets/2013-08-15-delay-scheduling/algorithm1.png)
-####3.2 Scheduling Responsiveness
-Ideally, we would like a job j whose fair share is F slots to have a response time similar to what it would get if it ran alone on a smaller, private cluster with **F** slots. Suppose that j would take **J** seconds to run on the private cluster. We calculate how long j takes to receive its share of slots if it is submitted to a shared cluster that uses waiting. If all slots in the cluster are full, the rate at which j is given slots will be the rate at which tasks finish. Suppose that the average task length is **T** , and that the cluster contains **S** slots. Then one slot will free up every T/S econds on average, so j is expected to wait FT/S seconds to acquire all of its slots. This wait time will be negligible compared to j’s running time as long as:
+####3.2 Scheduling Responsiveness
+Ideally, we would like a job j whose fair share is `F slots` to have a response time similar to what it would get if it ran alone on a smaller, private cluster with `F slots`. Suppose that j would take `J seconds` to run on the private cluster. We calculate how long j takes to receive its share of slots if it is submitted to a shared cluster that uses waiting. If all slots in the cluster are full, the rate at which j is given slots will be the rate at which tasks finish. Suppose that the `average task length is T` , and that the cluster contains `S slots`. Then one slot will free up every T/S seconds on average, so j is expected to wait FT/S seconds to acquire all of its slots. This wait time will be negligible compared to j’s running time as long as:
       
     J >> (F/S)T
     

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "曾国藩家书"
+title: "读书笔记-曾国藩家书"
 description: "《曾国藩家书》笔记"
 category: 精进
 tags: [曾国藩]
