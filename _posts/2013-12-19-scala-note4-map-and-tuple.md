@@ -128,3 +128,8 @@ object Main extends App {
   for ((s, n) <- pairs) Console.print(s * n)
 }
 {% endhighlight %}
+
+####可参考的资料
+* [Scala Documentation COLLECTIONS][1]
+
+[1]:http://docs.scala-lang.org/overviews/collections/maps.html
