@@ -3,7 +3,7 @@ layout: post
 title: "读书笔记-把时间当作朋友"
 description: ""
 category: 管理
-tags: [gtd]
+tags: [GTD]
 ---
 {% include JB/setup %}
 读[《把时间当作朋友》](http://book.douban.com/subject/3609132/)。
