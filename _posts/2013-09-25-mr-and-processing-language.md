@@ -1,9 +1,9 @@
 ---
 layout: post
 title: "MapReduce数据处理模型"
-description: ""
+description: "1.google mapreduce论文；2.mapreduce-merge增加一个merge阶段极其如何实现sql；3.mapreduce online，中间文件不落地，直接push给reducer"
 category: 云计算
-tags: [MapReduce, Pig, Scope, Dryad, LINQ, Sawzall]
+tags: [MapReduce]
 ---
 {% include JB/setup %}
 
@@ -54,226 +54,146 @@ tags: [MapReduce, Pig, Scope, Dryad, LINQ, Sawzall]
 * Status Information：The master runs an internal HTTP server and exports a set of status pages for human consumption. 
 * Counters：The MapReduce library provides a counter facility to count occurrences of various events.
 
+###2 [Map-Reduce-Merge: Simplified Relational Data Processing on Large Clusters][2]
 
+The Map-Reduce-Merge model enables processing multiple heterogeneous datasets. The signatures of the Map-Reduce-Merge primitives are listed below, where α, β, γ represent dataset lineages, k means keys, and v stands for value entities.
 
+    map: (k1, v1)α → [(k2, v2)]α
+    reduce: (k2,[v2])α → (k2,[v3])α
+    merge: ((k2,[v3])α,(k3,[v4])β) → [(k4,v5)]γ
 
+![mrm1](/assets/2013-09-25-mr-and-processing-language/mrm1.png)
 
+In this new model, the map function transforms an input key/value pair (k1,v1) into a list of intermediate key/value pairs [(k2 , v2 )]. The reduce function aggregates the list of values [v2] associated with k2 and produces a list of values [v3], which is also associated with k2. Note that inputs and outputs of both functions belong to the same lineage, say α. Another pair of map and reduce functions produce the intermediate output (k3,[v4]) from another lineage, say β. Based on keys k2 and k3, the merge function combines the two reduced outputs from different lineages into a list of key/value outputs [(k4,v5)]. This final output becomes a new lineage, say γ. If α = β, then this merge function does a `self-merge`, similar to self-join in relational algebra.
 
+####2.1 Implementation
+* A call to a map function (`mapper`) processes a key/value pair, and a call to a reduce function (`reducer`) processes a key-grouped value collection, a `merger` processes two pairs of key/values, that each comes from a distinguishable source.
+* At the Merge phase, users might want to apply different data-processing logic on data based on their sources. An example is the build and probe phases of a `hash join`[J注1], where build programming logic is applied on one table then probe the other. To accommodate this pattern, a `processor` is a user-defined function that processes data from one source only. Users can define two processors in Merge.
 
-####23 [SCOPE: Easy and Efficient Parallel Processing of Massive Data Sets][4]
+![mrm2](/assets/2013-09-25-mr-and-processing-language/mrm2.png)
 
-#####23.1 PLATFORM OVERVIEW
+* After map and reduce tasks are about done, a Map-Reduce-Merge coordinator launches mergers on a cluster of nodes (see Fig. 2). When a merger starts up, it is assigned with a merger number. Using this number, a user-definable module called `partition selector` can determine from which reducers this merger retrieves its input data. Mappers and reducers are also assigned with a number. For mappers, this number represents the input file split. For reducers, this number represents an input bucket, in which mappers partition and store their output data to. For Map-Reduce users, these numbers are simply system implementation detail, but in Map-Reduce-Merge, users utilize these numbers to associate input/output between mergers and reducers in partition selectors.
+* A merger reads data from two sources, so it can be viewed as having two logical iterators. These iterators usually move forward as their mapper/reducer counterparts, but their relative movement against each others can be instrumented to implement a user-defined merge algorithm. Our Map-Reduce-Merge framework provides a user-configurable module (`iterator-manager`) that it is called for the information that controls the movement of these `configurable iterators`.
 
-![2](/assets/2013-09-25-mr-and-processing-language/scope1.png)
+![mrm3](/assets/2013-09-25-mr-and-processing-language/mrm3.png)
 
-An application is modeled as a dataflow graph: a directed acyclic graph (DAG) with vertices representing processes and edges representing data flows. The runtime component of the execution engine is called the `Job Manager`. The JM is the central and coordinating process for all processing vertices within an application. The primary function of the JM is to construct the runtime DAG from the compile time representation of a DAG and execute over it. The JM schedules a DAG vertex onto the system processing nodes when all the inputs are ready, monitors progress, and, on failure, re-executes part of the DAG.
+* `Partition Selector` In a merger, a user-defined partition selector function determines which data partitions produced by up-stream reducers should be retrieved then merged. This function is given the current merger’s number and two collections of reducer numbers, one for each data source. Users define logic in the selector to remove unrelated reducers from the collections. Only the data from the reducers left in the collections will be read and merged in the merger.
+* `Processors` A processor is the place where users can define logic of processing data from an individual source. Processors can be defined if the hash join algorithm is implemented in Merge, where the first processor builds a hash table on the first source, and the second probes it while iterating through the second data source.
+* `Merger` In the merge function, users can implement data processing logic on data merged from two sources where this data satisfies a merge condition.
+* `Configurable Iterators` As indicated, by manipulating relative iteration of a merger’s two logical iterators, users can implement different merge algorithms.For algorithms like nested-loop joins, iterators are configured to move as looping variables in a nested loop. For algorithms like sort-merge joins, iterators take turns when iterating over two sorted collections of records. For hash-join-like algorithms, these two iterators scan over their data in separate passes. The first scans its data and builds a hash table, then the second scans its data and probes the already built hash table.
 
-`Dryad` implements a job manager and a graph building language for composing vertices of computation and edges of communication channels between the vertices.
+####2.2 APPLICATIONS TO RELATIONAL DATA PROCESSING
+In our implementation, the Map-Reduce-Merge model assumes that a dataset is mapped into a relation R with an attribute set (schema) A. In map, reduce, and merge functions, users choose attributes from A to form two subsets: K and V . K represents the schema of the “key” part of a Map-Reduce-Merge record and V the “value” part. For each tuple t of R, this implies that t is concatenated by two field sets: k and v,where K is the schema of k and V is the schema of v.
 
-#####23.2 SCOPE Scripting Language
+* `Projection` For each tuple t = (k,v) of the input relation, users can define a mapper to transform it into a projected output tuple t′ = (k′,v′), where k′ and v′ are typed by schema K′ and V ′, respectively. K′ and V ′ are subsets of A. Namely, using mappers only can implement relational algebra’s projection operator.
+* `Aggregation` At the Reduce phase, Map-Reduce (as well as Map-Reduce-Merge) performs the sort-by-key and group-by-key functions to ensure that the input to a reducer is a set of tuples t = (k, [v]) in which [v] is the collection of all the values associated with the key k. A reducer can call aggregate functions on this grouped value list. Namely, reducers can easily implement the “group by” clause and “aggregate” operators in SQL.
+* `Generalized Selection` Mappers, reducers, and mergers can all act as filters and implement the selection operator. If a selection condition is on attributes of one data source, then it can be implemented in mappers. If a selection condition is on aggregates or a group of values from one data source, then it can be implemented in reducers. If a selection condition involves attributes or aggregates from more than one sources, then it can be implemented in mergers. Straightforward filtering conditions that involve only one relation in a SQL query’s “where” and “having” clauses can be implemented using mappers and reducers, respectively. Mergers can implement complicated filtering conditions involving more than one relations, however, this filtering can only be accomplished after join (or Cartesian product) operations are properly configured and executed.
+* `Joins` § 1.3 describes in detail how joins can be implemented using mergers with the help from mappers and reducers.
+* `Set Union` Assume the union operation (as well as other set operations described below) is performed over two relations. In Map-Reduce-Merge, each relation will be processed by Map-Reduce, and the sorted and grouped outputs of the reducers will be given to a merger. In each reducer, duplicated tuples from the same source can be skipped easily. The mappers for the two sources should share the same range partitioner, so that a merger can receive records within the same key range from the two reducers. The merger can then iterate on each input simultaneously and produce only one tuple if two input tuples from different sources are duplicates. Non-duplicated tuples are produced by this merger as well.
+* `Set Intersection` First, partitioned and sorted MapReduce outputs are sent to mergers as described in the last item. A merger can then iterate on each input simultaneously and produce tuples that are shared by the two reducer outputs.
+* `Cartesian Product` In a Map-Reduce-Merge task, the two reducer sets will produce two sets of reduced partitions. A merger is configured to receive one partition from the first reducer (F) and the complete set of partitions from the second one (S). This merger can then form a nested loop to merge records in the sole F partition with the ones in every S partition.
+* `Rename` It is trivial to emulate Rename in Map-Reduce-Merge, since map, reduce, and merge functions can select, rearrange, compare, and process attributes based on their indexes in the “key” and “value” subsets.
 
-The SCOPE scripting language resembles SQL but with C# expressions.
+####2.3 Map-Reduce-Merge Implementations of Relational Join Algorithms
+* `Sort-Merge Join` Instead of using a `hash partitioner`, users can configure the framework to use a `range partitioner` in mappers.
+    * Map: Use a range partitioner in mappers, so that records are partitioned into ordered buckets, each is over a mutually exclusive key range and is designated to one reducer.
+    * Reduce: For each Map-Reduce lineage, a reducer reads the designated buckets from all the mappers. Data in these buckets are then merged into a sorted set. This sorting procedure can be done completely at the reducer side, if necessary, through an external sort. Or, mappers can sort data in each buckets before sending them to reducers. Reducers can then just do the merge part of the `merge sort` using a priority queue.
+    * Merge: A merger reads from two sets of reducer outputs that cover the same key range. Since these reducer outputs are sorted already, this merger simply does the merge part of the `sort-merge join`.
+* `Hash Join` One important issue in distributed computing and parallel databases is to keep workload and storage balanced among nodes. One strategy is to disseminate records to nodes based on their hash values. Another approach is to run a preprocessing Map-Reduce task to scan the whole dataset and build a data density. Here we show how to implement `hash join` using the Map-Reduce-Merge framework:
+    * Map: Use a common hash partitioner in both mappers, so that records are partitioned into hashed buckets, each is designated to one reducer.
+    * Reduce: For each Map-Reduce lineage, a reducer reads from every mapper for one designated partition. Using the same hash function from the partitioner, records from these partitions can be grouped and aggregated using a hash table, requires maintaining a hashtable either in memory or disk.
+    * Merge: A merger reads from two sets of reducer outputs that share the same hashing buckets. One is used as a `build` set and the other `probe`. After the partitioning and grouping are done by mappers and reducers, the build set can be quite small, so these sets can be hash-joined in memory. Notice that, the number of reduce/merge sets must be set to an optimally large number in order to support an in-memory hash join, otherwise, an external hash join is required.
+* `Block Nested-Loop Join` The Map-Reduce-Merge implementation of the `block nested-loop` join algorithm is very similar to the one for the hash join. Instead of doing an in-memory hash, a nested loop is implemented. The partitioning and grouping done by mappers and reducers concentrate the join sets, so this parallel nested-loop join can enjoy a high selectivity in each merger.
 
-* Input and Output
-* Select and Join
-* Expressions and Functions
-* User-Defined Operators
-  * Process
-  * Reduce
-  * Combine
-  * Importing Scripts
+####2.4 OPTIMIZATIONS
+1. Optimal Reduce-Merge Connections
+    * For mergers, because data is already partitioned and even sorted after Map and Reduce phases, they do not need to connect to every reducer in order to get their data. The selector function in mergers can choose pertinent reduced partitions for merging.
+    * If one input dataset is much larger than the other, then it would be inefficient to partition both datasets into the same number of reducers. One can choose different numbers for RA and RB, but the selection logic is more complicated.
+    * Selector logic can also be quite complicated in the case of θ-join.
+    * Before feeding data from selected reducer partitions to a user-defined merger function, these tuples can be compared and see if they should be merged or not. In short, this comparison can be done in a user-defined `matcher` that is simply a fine-grained selector.
+2. Combining Phases
+    * `ReduceMap, MergeMap`: Reducer and merger outputs are usually fed into a down-stream mapper for a subsequent join operation. These outputs can simply be sent directly to a co-located mapper in the same process without storing them in secondary storage first.
+    * `ReduceMerge`: A merger usually takes two sets of reducer partitions. This merger can be combined with one of the reducers and gets its output directly while remotely reads data from the other set of reducers.
+    * `ReduceMergeMap`: An straightforward combination of ReduceMerge and MergeMap becomes ReduceMergeMap.
+    * Another way of reducing disk accesses is to replace disk read-writes with network read-writes.
 
-#####23.3 SCOPE Execution
+###3 [MapReduce Online][4]
+####3.1 Background
+1. Programming Model
+    * To use MapReduce, the programmer expresses their desired computation as a series of `jobs`. The input to a job is a list of `records` (key-value pairs). Each job consists of two steps:
+        * First, a user-defined `map` function is applied to each record to produce a list of intermediate key-value pairs.
+        * Second, a user-defined `reduce` function is called once for each distinct key in the map output, and passed the list of intermediate values associated with that key.
+        * Optionally, the user can supply a `combiner` function. A combiner emits an output value that summarizes the input values it was passed.
+2. Hadoop Architecture
+    * The master, called the `JobTracker`, is responsible for accepting jobs from clients, dividing those jobs into tasks, and assigning those tasks to be executed by worker nodes.
+    * Each worker runs a `TaskTracker` process that manages the execution of the tasks currently assigned to that node.
+    * A `heartbeat` protocol between each TaskTracker and the JobTracker is used to update the JobTracker’s bookkeeping of the state of running tasks, and drive the scheduling of new tasks: if the JobTracker identifies free TaskTracker slots, it will schedule further tasks on the TaskTracker.
+3. Map Task Execution
+    * Each map task is assigned a portion of the input file called a `split`. The execution of a map task is divided into two phases.
+        * The `map` phase reads the task’s split from HDFS, parses it into records (key/value pairs), and applies the map function to each record.
+        * After the map function has been applied to each input record, the `commit` phase registers the final output with the TaskTracker, which then informs the JobTracker that the task has finished executing.
+4. Reduce Task Execution
+    * The execution of a reduce task is divided into three phases.
+        * The `shuffle` phase fetches the reduce task’s input data. Each reduce task is assigned a partition of the key range produced by the map step, so the reduce task must fetch the content of this partition from every map task’s output.
+        * The `sort` phase groups records with the same key together.
+        * The `reduce` phase applies the user-defined reduce function to each key and corresponding list of values.
 
-* SCOPE Compilation
-  * The result of the compilation is an internal parse tree. SCOPE has an option to translate the parsed tree directly to a physical execution plan using default plans for each command.
-  * A physical execution plan is, in essence, a specification of Cosmos job.
-* SCOPE Optimization
-  * The SCOPE optimizer is a transformation-based optimizer based on the `Cascades` framework. 
-* Runtime Optimization
-
-####24 [DryadLINQ: A System for General-Purpose Distributed Data-Parallel Computing Using a High-Level Language][5]
-
-#####24.1 DryadLINQ Execution Overview
-
-![3](/assets/2013-09-25-mr-and-processing-language/DryadLINQ1.png)
-
-* Step 1. A .NET user application runs. It creates a DryadLINQ expression object. Because of LINQ’s `deferred evaluation`, the actual execution of the expression has not occurred.
-* Step 2. The application calls `ToDryadTable` triggering a data-parallel execution. The expression object is handed to DryadLINQ.
-* Step 3. DryadLINQ compiles the LINQ expression into a distributed Dryad execution plan. It performs: 
-  * (a) the decomposition of the expression into subexpressions, each to be run in a separate Dryad vertex; 
-  * (b) the generation of code and static data for the remote Dryad vertices;
-  * (c) the generation of serialization code for the required data types.
-* Step 4. DryadLINQ invokes a custom, DryadLINQ-specific, Dryad job manager. The job manager may be executed behind a cluster firewall.
-* Step 5. The job manager creates the job graph using the plan created in Step 3. It schedules and spawns the vertices as resources become available.
-* Step 6. Each Dryad vertex executes a vertex-specific program (created in Step 3b).
-* Step 7. When the Dryad job completes successfully it writes the data to the output table(s).
-* Step 8. The job manager process terminates, and it returns control back to DryadLINQ. DryadLINQ creates the local DryadTable objects encapsulating the outputs of the execution. These objects may be used as inputs to subsequent expressions in the user program. Data objects within a DryadTable output are fetched to the local context only if explicitly dereferenced.
-* Step 9. Control returns to the user application. The iterator interface over a DryadTable allows the user to read its contents as .NET objects.
-* Step 10. The application may generate subsequent DryadLINQ expressions, to be executed by a repetition of Steps 2–9.
-
-#####24.2 LINQ
-
-The base type for a LINQ collection is `IEnumerable<T>`. From a programmer’s perspective, this is an abstract dataset of objects of type T that is accessed using an iterator interface. LINQ also defines the `IQueryable<T>` interface which is a subtype of `IEnumerable<T>` and represents an (unevaluated) expression constructed by combining LINQ datasets using LINQ operators. We need make only two observations about these types: (a) in general the programmer neither knows nor cares what concrete type implements any given dataset’s IEnumerable interface; and (b) DryadLINQ composes all LINQ expressions into IQueryable objects and defers evaluation until the result is needed, at which point the expression graph within the IQueryable is optimized and executed in its entirety on the cluster. Any IQueryable object can be used as an argument to multiple operators, allowing efficient re-use of common subexpressions.
-
-#####24.3 DryadLINQ Constructs
-
-The inputs and outputs of a DryadLINQ computation are represented by objects of type `DryadTable<T>`, which is a subtype of `IQueryable<T>`.
-
-The inputs and outputs of a DryadLINQ computation are specified using the `GetTable<T>` and `ToDryadTable<T>` operators.
-
-DryadLINQ offers two data re-partitioning operators: `HashPartition<T,K>` and `RangePartition<T,K>`. These operators are needed to enforce a partitioning on an output dataset and they may also be used to override the optimizer’s choice of execution plan.
-
-The remaining new operators are `Apply` and `Fork`, which can be thought of as an “escape-hatch” that a programmer can use when a computation is needed that cannot be expressed using any of LINQ’s built-in operators. `Apply` takes a function f and passes to it an iterator over the entire input collection, allowing arbitrary streaming computations. The `Fork` operator is very similar to Apply except that it takes a single input and generates multiple output datasets. This is useful as a performance optimization to eliminate common subcomputations, e.g.
-
-#####24.4 DryadLINQ Optimizations
-
-* Static Optimizations
-  * Pipelining
-  * Removing redundancy
-  * Eager Aggregation
-  * I/O reduction
-* Dynamic Optimizations
-* Optimizations for OrderBy
-* Execution Plan for MapReduce
-
-####25 [Dryad: Distributed Data-Parallel Programs from Sequential Building Blocks][6]
-
-#####25.1 SYSTEM OVERVIEW
-
-![dryad1](/assets/2013-09-25-mr-and-processing-language/dryad1.png)
-
-#####25.2 DESCRIBING A DRYAD GRAPH
-
-![dryad2](/assets/2013-09-25-mr-and-processing-language/dryad2.png)
-
-![dryad3](/assets/2013-09-25-mr-and-processing-language/dryad3.png)
-
-
-This is a [research prototype][7] of the Dryad and DryadLINQ data-parallel processing frameworks running on Hadoop YARN.
-
-####26 [MapReduce Online][8]
+####3.2 Pipelined MapReduce
 
 ![mr-online](/assets/2013-09-25-mr-and-processing-language/mr_1.png)
 
-####27 [Interpreting the Data: Parallel Analysis with Sawzall][9]
+1. Pipelining Within A Job
+    * Reduce tasks traditionally issue HTTP requests to `pull` their output from each TaskTracker. To support pipelining, we modified the map task to instead `push` data to reducers as it is produced.
+    * Na ̈ıve Pipelining
+        * Each reduce task contacts every map task upon initiation of the job, and opens a socket which will be used to pipeline the output of the map function. As each map output record is produced, the mapper determines which partition (reduce task) the record should be sent to, and immediately sends it via the appropriate socket.
+        * A reduce task accepts the pipelined data it receives from each map task and stores it an in-memory buffer, spilling sorted runs of the buffer to disk as needed. Once the reduce task learns that every map task has completed, it performs a final merge of all its sorted runs and applies the user-defined reduce function as normal, writing the output to HDFS.
+    * Refinements
+        * Problems:
+            * First, it is possible that there will not be enough slots available to schedule every task in a new job.
+            * Opening a socket between every map and reduce task also requires a large number of TCP connections.
+        * Solutions:
+            * If a reduce task has not yet been scheduled, any map tasks that produce records for that partition simply write them to disk. Once the reduce task is assigned a slot, it can then fetch the records from the map task, as in stock Hadoop.
+            * To reduce the number of concurrent TCP connections, each reducer can be configured to pipeline data from a bounded number of mappers at once; the reducer will pull data from the remaining map tasks in the traditional Hadoop manner.
+    * Granularity of Map Output
+        * Problems:
+            * Combiners allow “map-side preaggregation”: By eagerly pipelining each record as it is produced, there is no opportunity for the map task to apply a combiner function.
+            * Eager pipelining moves some of the sorting work from the mapper to the reducer: In the na ̈ıve pipelining design, map tasks send output records in the order in which they are generated, so the reducer must perform a full external sort.
+        * Solutions:
+            * Instead of sending the buffer contents to reducers directly, we instead wait for the buffer to grow to a threshold size. The mapper then applies the combiner function, sorts the output by partition and reduce key.
+            * A second thread monitors the spill files, and sends them to the pipelined reducers. This has the effect of `adaptively` moving load from the reducer to the mapper or vice versa, depending on which node is the current bottleneck.
 
-#####27.1 Sawzall Language Overview
+2. Pipelining Between Jobs
+    * In our modified version of Hadoop, the reduce tasks of one job can optionally pipeline their output directly to the map tasks of the next job, sidestepping the need for expensive fault-tolerant storage in HDFS for what amounts to a temporary file.
 
-    i: int;      # a simple integer declaration
-    i: int = 0;  # a declaration with an initial value
-    
-    f: float;
-    s: string = "1.234";
-    f = float(s);
-    
-    string(1234, 16);
-    string(utf8_bytes, "UTF-8");
-    
-    b: bytes = "Hello, world!\n";
-    b: bytes = bytes("Hello, world!\n", "UTF-8");
-    
-    input: bytes = next_record_from_input();
-    
-    proto "some_record.proto" # define ’Record’
-    r: Record = input;         # convert input to Record
+3. Fault Tolerance
+    * To simplify fault tolerance, the reducer treats the output of a pipelined map task as “tentative” until the JobTracker informs the reducer that the map task has committed successfully.
+    * The reducer can merge together spill files generated by the same uncommitted mapper, but won’t combine those spill files with the output of other map tasks until it has been notified that the map task has committed.
+    * Envision introducing a “checkpoint” concept: as a map task runs, it will periodically notify the JobTracker that it has reached offset x in its input split. The JobTracker will notify any connected reducers; map task output that was produced before offset x can then be merged by reducers with other map task output as normal.
+    * To avoid duplicate results, if the map task fails, the new map task attempt resumes reading its input at offset x. This technique also has the benefit of reducing the amount of redundant work done after a map task failure.
 
-#####27.2 Aggregators
+####3.3 Online Aggregation
+1. Single-Job Online Aggregation:We can support online aggregation by simply applying the reduce function to the data that a reduce task has received so far. We call the output of such an intermediate reduce operation a `snapshot`. Applications can consume snapshots by polling HDFS in a predictable location.
+2. Multi-Job Online Aggregation:Suppose that j1 and j2 are two MapReduce jobs, and j2 consumes the output of j1. When j1’s reducers compute a snapshot to perform online aggregation, that snapshot is written to HDFS, and also sent directly to the map tasks of j2. The map and reduce steps for j2 are then computed as normal, to produce a snapshot of j2’s output. This process can then be continued to support online aggregation for an arbitrarily long sequence of jobs.
 
-* Collection:
+####3.4 Continuous Queries
+1. Continuous MapReduce Jobs
+    * We added an optional “flush” API that allows map functions to force their current output to reduce tasks. When a reduce task is unable to accept such data, the mapper framework stores it locally and sends it at a later time.
+    * To support continuous reduce tasks, the user-defined reduce function must be periodically invoked on the map output available at that reducer. Applications will have different requirements for how frequently the reduce function should be invoked: possible choices include periods based on wall-clock time, logical time (e.g. the value of a field in the map task output), and the number of input rows delivered to the reducer.
+2. Prototype Monitoring System
+    * Our monitoring system is composed of `agents` that run on each monitored machine and record statistics of interest (e.g. load average, I/O operations per second, etc.).
+    * Each agent is implemented as a continuous map task: rather than reading from HDFS, the map task instead reads from various continuous system-local data streams (e.g. /proc).
+    * Each agent forwards statistics to an `aggregator` that is implemented as a continuous reduce task.
 
-        c: table collection of string;
-* Sample:
+----
 
-        s: table sample(100) of string;
-* Sum:
+###J注
+1. [Join的三种方式][3]
+    * `Hash join`是将一个表（通常是小一点的那个表）做hash运算，将列数据存储到hash列表中，从另一个表中抽取记录，做hash运算，到hash列表中找到相应的值，做匹配。
+    * `Nested loops`是从一张表中读取数据，访问另一张表（通常是索引）来做匹配，nested loops适用的场合是当一个关联表比较小的时候，效率会更高。
+    * `Merge Join`是先将关联表的关联列各自做排序，然后从各自的排序表中抽取数据，到另一个排序表中做匹配，因为merge join需要做更多的排序，所以消耗的资源更多。通常来讲，能够使用merge join的地方，hash join都可以发挥更好的性能。
 
-        s: table sum of { count: int, revenue: float };
-* Maximum:
-
-        m: table maximum(10) of string weight length: int;
-* Quantile:
-
-        q: table quantile(101) of response_in_ms: int;
-* Top:
-
-        t: table top(10) of language: string;
-* Unique:
-
-        u: table unique(10000) of string;
-
-######27.3 Indexed Aggregators
-
-    table top(1000) [country: string][hour: int] of request: string;
-    
-    t1: table sum[country: string] of int
-    #equivalent to the values collected by
-    t2: table collection of country: string
-    
-    t1["china"] = 123456
-    t1["japan"] = 142367
-
-####28 [Map-Reduce-Merge: Simplified Relational Data Processing on Large Clusters][10]
-see [paper review: Map-Reduce-Merge][11]
-
-####29 [Improving MapReduce Performance in Heterogeneous Environments][12]
-see [paper review: Improving MapReduce Performance in Heterogeneous Environments][13]
-
-####30 [HANDLING DATA SKEW IN MAPREDUCE][14]
-#####30.1 Contribution
-
-* We present a new cost model that takes into account non-linear reducers and skewed data distributions, and we propose an efficient algorithm to estimate the cost in a distributed environment.
-* We propose two load balancing algorithms that are based on our cost model and evenly distribute the load on the reducers. The first algorithm, fine partitioning, splits the data into a fixed number of partitions, estimates their cost, and distributes them appropriately. The second approach, dynamic fragmentation, controls the cost of the partitions while they are created.
-
-#####30.2 DATA SKEW IN MapReduce
-A good data distribution tries to balance the clus- ters such that all reducers will require roughly the same time for processing. There are two aspects which need to be considered.
-
-1. Number of Clusters. 
-2. Difficulty of Clusters. 
-
-The first of these two points can be solved by using an appropriate hash function for partitioning the data. The second point describes two challenges which can not be handled by optimal hashing: clusters of varying size and clusters of varying complexity.
-
-![skew](/assets/2013-09-25-mr-and-processing-language/skew1.png)
-
-#####30.3 COST MODEL
-
-Current Situation
-
-1. Skewed Key Frequencies.
-2. Skewed Tuple Sizes.
-3. Skewed Execution Times.
-
-Optimal Solution
-
-In order to balance the workload on the reducers, we need to know the amount of work required for every cluster. Typically, the work per cluster depends either on the number of tuples in the cluster, or on the byte size of the cluster, or both these parameters. Therefore, while creating the clusters, we monitor for every cluster C(k) the number of tuples it contains, |C(k)|, and its (byte) size, ∥C(k)∥. Based on the complexity of the reducer algorithm, we can then calculate the weight, w(|C(k)|,∥C(k)∥), i.e.
-
-#####30.4 LOAD BALANCING
-
-* Fine Partitioning
-  * By creating more partitions than there are reducers (i. e., by choosing p > r, in contrast to current MapReduce systems where p = r), we retain some degree of freedom for balancing the load on the reducers. 
-
-![skew2](/assets/2013-09-25-mr-and-processing-language/skew2.png)
-
-* Dynamic Fragmentation
-  * With the fine partitioning approach presented above, some partitions may grow excessively large, making a good load balancing impossible. In this section we present a strategy which dynamically splits very large partitions into smaller fragments. We define a partition to be very large if it exceeds the average partition size by a predefined factor. Similar to partitions, fragments are containers for multiple clusters. In contrast to partitions, however, the number of fragments may vary from mapper to mapper.
-
-![skew3](/assets/2013-09-25-mr-and-processing-language/skew3.png)
-
-#####30.5 Reducer Slow-start
-
-Empirical evaluations show a fast convergence of the assignments after r mappers are completed.
 
 [1]: http://static.googleusercontent.com/external_content/untrusted_dlcp/research.google.com/zh-CN//archive/mapreduce-osdi04.pdf
-[2]: http://infolab.stanford.edu/~usriv/papers/pig-latin.pdf
-[3]: http://zhangjunhd.github.io/2013/03/03/pig/
-[4]: http://research.microsoft.com/en-us/um/people/jrzhou/pub/Scope.pdf
-[5]: http://research.microsoft.com/en-us/projects/dryadlinq/dryadlinq.pdf
-[6]: https://www.cs.cmu.edu/afs/cs.cmu.edu/Web/People/15712/papers/isard07.pdf
-[7]: https://github.com/MicrosoftResearchSVC/Dryad "Dryad github"
-[8]: http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-136.pdf
-[9]: http://static.googleusercontent.com/external_content/untrusted_dlcp/research.google.com/zh-CN//archive/sawzall-sciprog.pdf
-[10]: http://www.cs.duke.edu/courses/cps399.28/current/papers/sigmod07-YangDasdanEtAl-map_reduce_merge.pdf
-[11]: http://zhangjunhd.github.io/2013/08/24/map-reduce-merge/
-[12]: http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-183.pdf
-[13]: http://zhangjunhd.github.io/2013/07/11/improving-mapreduce-performance-in-heterogeneous-environments/
-[14]: http://www-db.in.tum.de/research/publications/conferences/closer2011-100.pdf
+[2]: http://www.cs.duke.edu/courses/cps399.28/current/papers/sigmod07-YangDasdanEtAl-map_reduce_merge.pdf
+[3]: http://blog.csdn.net/tianlesoftware/article/details/5826546
+[4]: http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-136.pdf
