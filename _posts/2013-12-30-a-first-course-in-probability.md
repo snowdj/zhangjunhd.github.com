@@ -106,8 +106,21 @@ tags: [概率]
 
 1. 随机变量X称为服从区间(a,b)上的`均匀分布`，如果其密度函数为`\(f(x) = \begin{cases} \frac{1}{b-a}, a≤x≤b\\ 0,其他 \end{cases} \)`，其期望是`\(E[X] = \frac{a+b}{2}\)`,方差为`\(Var(X) = \frac{(b-a)^2}{12}\)`
 2. 随机变量X称为服从参数为`\(\mu\)`和`\(\sigma^2\)`的`正态`随机变量，如果其密度函数为`\(f(x) = \frac{1}{\sqrt{2\pi}\sigma}e^{-(x-\mu)^2/2\sigma^2}, -\infty < x < \infty\)`，可以证明`\(\mu = E[X], \sigma^2 = Var[X]\)`
-    * 如果X服从均值为`\(\mu\)`,方差为`\(\sigma^2\)`的正态分布，那么如下定义的Z:`\(Z = \frac{X-\mu}{\sigma}\)`也是服从正态分布的随机变量，其均值为0，方差为1.这样的随机变量称为`标准正态`随机变量。
-    * 参数为(n,p)的二项分布，当n足够大时，可以近似为均值为np，方差为np(1-p)的正态分布。
+    * ![normal1](/assets/2013-12-30-a-first-course-in-probability/normal1.png)
+    * 如果X服从参数为`\(\mu\)`和`\(\sigma^2\)`的正态分布，那么Y=aX+b也服从正态分布，其参数为`\(a\mu+b\)`和`\(a^2\sigma^2\)`。
+        * `\(F_Y(x)=P\{Y ≤ x\}=P\{aX+b≤x\}=P\{X≤\frac{x-b}{a}\}=F_X(\frac{x-b}{a})\)`
+        * 一个重要的应用是如果X是一个参数为`\((\mu,\sigma^2)\)`的正态随机变量，那么`\(Z = \frac{X-\mu}{\sigma}\)`也是服从正态分布的随机变量，其均值为0，方差为1.这样的随机变量称为`标准正态`随机变量。
+    * 曲线上划分等级法：![normal2](/assets/2013-12-30-a-first-course-in-probability/normal2.png)
+        * `\(P\{X>\mu+\sigma\}=P\{\frac{X-\mu}{\sigma}>1\}=1-\Phi(1)≈.1587\)`
+        * `\(P\{\mu<X<\mu+\sigma\}=P\{0<\frac{X-\mu}{\sigma}<1\}=\Phi(1)-\Phi(0)≈.3413\)`
+        * `\(P\{\mu-\sigma<X<\mu\}=P\{-1<\frac{X-\mu}{\sigma}<0\}=\Phi(0)-\Phi(-1)≈.3413\)`
+        * `\(P\{\mu-2\sigma<X<\mu-\sigma\}=P\{-2<\frac{X-\mu}{\sigma}<-1\}=\Phi(2)-\Phi(1)≈.1359\)`
+        * `\(P\{X<\mu-2\sigma\}=P\{\frac{X-\mu}{\sigma}<-2\}=\Phi(-2)≈.0228\)`
+    * 棣莫弗-拉普拉斯极限定理：参数为(n,p)的二项分布，当n足够大时，可以近似为均值为np，方差为np(1-p)的正态分布。
+        * 在n次独立重复试验中，设每次成功的概率是p，记成功的次数为`\(S_n\)`，则对任何a<b有：`\(n \rightarrow \infty,P\{a≤\frac{S_n-np}{\sqrt{np(1-p)}}≤n\} \rightarrow \Phi(b)-\Phi(a)\)`
+        * 连续性修正(continuti correction):以X表示抛40次均匀硬币出现正面的次数。试求X=20的概率。
+            * 正态近似：`\(P\{X=20\}=P\{19.5≤X<20.5\}=P\{\frac{19.5-20}{\sqrt{10}}<\frac{X-20}{\sqrt{10}}<\frac{20.5-20}{\sqrt{10}}\}≈P\{-0.16<\frac{X-20}{\sqrt{10}}<0.16\}≈\Phi(0.16)-\Phi(-0.16)≈0.1272\)`
+            * 精确计算：`\(P\{X=20\}={40 \choose 20}\frac{1}{2}^40≈0.1254\)`
 3. 一个随机变量称为参数为`\(\lambda\)`的`指数`随机变量，如果其密度函数为如下形式:`\(f(x) = \begin{cases} \lambda e^{-\lambda x}, x≥0\\ 0,其他 \end{cases}\)`，其期望为:`\(E[X] = \frac{1}{\lambda}\)`，方差为:`\(Var[X] = \frac{1}{\lambda^2}\)`
     * 一个只有指数随机变量才具有的重要性质是`无记忆性`，也即对于正数s和t，有`\(P\{X > s + t | X > t\} = P\{X > s\}\)`，如果X表示某个零件的寿命，那么无记忆性说明了对任意t，年龄为t的零件的剩余寿命同一个新的零件的寿命的分布是一样的。
     * 令X为一个非负连续型随机变量，其分布函数为F，密度函数为f，那么函数`\(\lambda(t) = \frac{f(t)}{1-F(t)},t≥0\)`称为F的`危险率`或`失效率`函数，如果我们认为X是某个零件的寿命，那么对于一个很小的值dt，`\(\lambda(t)dt\)`近似为年龄为t的零件在dt时间内会失效的概率。如果F是参数为`\(\lambda\)`的指数分布，那么`\(\lambda(t) = \lambda,t≥0\)`。另外，指数分布是唯一的失效率为常数的分布。

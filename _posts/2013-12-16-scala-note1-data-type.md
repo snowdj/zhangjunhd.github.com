@@ -138,3 +138,52 @@ object Run extends App {
     obj.isInstanceOf[C]    obj instanceOf C
     obj.asInstanceOf[C]    ( C ) obj
     classOf[C]             C.class  
+
+####Reflect
+得到类型
+{% highlight scala %}
+package testscala
+
+import scala.reflect.runtime.{universe => ru}
+
+class Foo(val s : String) {
+    def foo {println("foo:" + s)}
+}
+
+object TestMain extends App {
+
+  def getTypeTag[T: ru.TypeTag](obj: T) = ru.typeTag[T] // getTypeTag: [T](obj: T)(implicit evidence$1: reflect.runtime.universe.TypeTag[T])reflect.runtime.universe.TypeTag[T]
+    
+  def getTypeTag[T: ru.TypeTag](obj: T) = ru.typeTag[T] // getTypeTag: [T](obj: T)(implicit evidence$1: reflect.runtime.universe.TypeTag[T])reflect.runtime.universe.TypeTag[T]
+  val l = List[Foo]()
+  val theType = getTypeTag(l).tpe // theType: reflect.runtime.universe.Type = List[Foo]
+
+  def meth[A: ru.TypeTag](xs: List[A]) = ru.typeOf[A] match {
+      case t if t =:= ru.typeOf[String] => "list of strings"
+      case t if t <:< ru.typeOf[Foo] => "list of foos"
+  }
+  meth(List("string")) //list of strings
+  meth(List(new Foo("na"))) //list of foos
+}
+{% endhighlight %}
+
+反射构造一个对象：
+{% highlight scala %}
+package testscala
+
+import scala.reflect.runtime.{universe => ru}
+
+class Foo(val s : String) {
+    def foo {println("foo:" + s)}
+}
+
+object TestMain2 extends App {
+  val m = ru.runtimeMirror(getClass.getClassLoader)
+  val classFoo = ru.typeOf[Foo].typeSymbol.asClass // classFoo: reflect.runtime.universe.ClassSymbol = class Foo
+  val cm = m.reflectClass(classFoo) // cm: reflect.runtime.universe.ClassMirror = class mirror for Foo (bound to null)
+  val ctor = ru.typeOf[Foo].declaration(ru.nme.CONSTRUCTOR).asMethod // ctor: reflect.runtime.universe.MethodSymbol = constructor Foo
+  val ctorm = cm.reflectConstructor(ctor) // ctorm: reflect.runtime.universe.MethodMirror = constructor mirror for Foo.<init>(s: String): Foo (bound to null)
+  val p = ctorm("Hello").asInstanceOf[Foo] // p: Foo = Foo@3e937cea
+  p.foo // foo:Hello
+}
+{% endhighlight %}

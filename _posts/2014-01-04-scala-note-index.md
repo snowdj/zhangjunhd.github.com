@@ -14,6 +14,7 @@ tags: [scala]
   * Scala date/time
   * Scala String(`format`, `mkString`,`mkString`, `stripLineEnd`, `==`, `count`, `split`, `foreach(println)`, `distinct`, `diff`, `intersect`, `take`, `drop`, `takeRight`, `dropRight`, `substring`)
   * 类型检查与转换(`isInstanceOf`, `asInstanceOf`, `classOf`)
+  * 类反射
 * [Scala笔记2-控制结构与函数](http://zhangjunhd.github.io/2013/12/17/scala-note2-condition-and-function.html)
   * `for`
   * `yeild`
