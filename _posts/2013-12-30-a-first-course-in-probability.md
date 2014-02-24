@@ -120,11 +120,14 @@ tags: [概率]
         * 在n次独立重复试验中，设每次成功的概率是p，记成功的次数为`\(S_n\)`，则对任何a<b有：`\(n \rightarrow \infty,P\{a≤\frac{S_n-np}{\sqrt{np(1-p)}}≤n\} \rightarrow \Phi(b)-\Phi(a)\)`
         * 连续性修正(continuti correction):以X表示抛40次均匀硬币出现正面的次数。试求X=20的概率。
             * 正态近似：`\(P\{X=20\}=P\{19.5≤X<20.5\}=P\{\frac{19.5-20}{\sqrt{10}}<\frac{X-20}{\sqrt{10}}<\frac{20.5-20}{\sqrt{10}}\}≈P\{-0.16<\frac{X-20}{\sqrt{10}}<0.16\}≈\Phi(0.16)-\Phi(-0.16)≈0.1272\)`
-            * 精确计算：`\(P\{X=20\}={40 \choose 20}\frac{1}{2}^40≈0.1254\)`
+            * 精确计算：`\(P\{X=20\}={40 \choose 20}\frac{1}{2}^{40}≈0.1254\)`
 3. 一个随机变量称为参数为`\(\lambda\)`的`指数`随机变量，如果其密度函数为如下形式:`\(f(x) = \begin{cases} \lambda e^{-\lambda x}, x≥0\\ 0,其他 \end{cases}\)`，其期望为:`\(E[X] = \frac{1}{\lambda}\)`，方差为:`\(Var[X] = \frac{1}{\lambda^2}\)`
     * 一个只有指数随机变量才具有的重要性质是`无记忆性`，也即对于正数s和t，有`\(P\{X > s + t | X > t\} = P\{X > s\}\)`，如果X表示某个零件的寿命，那么无记忆性说明了对任意t，年龄为t的零件的剩余寿命同一个新的零件的寿命的分布是一样的。
     * 令X为一个非负连续型随机变量，其分布函数为F，密度函数为f，那么函数`\(\lambda(t) = \frac{f(t)}{1-F(t)},t≥0\)`称为F的`危险率`或`失效率`函数，如果我们认为X是某个零件的寿命，那么对于一个很小的值dt，`\(\lambda(t)dt\)`近似为年龄为t的零件在dt时间内会失效的概率。如果F是参数为`\(\lambda\)`的指数分布，那么`\(\lambda(t) = \lambda,t≥0\)`。另外，指数分布是唯一的失效率为常数的分布。
-4. 一个随机变量称为参数为`\((\alpha,\lambda)\)`的`\(\Gamma\)`随机变量，如果其密度函数等于`\(f(x) = \frac{\lambda e^{-\lambda x}(\lambda x)^{\alpha-1}}{\Gamma(\alpha)}, x≥0\)`，`\(\Gamma(\alpha)\)`称为`\(\Gamma\)`函数，定义为`\(\Gamma(\alpha) = \int_0^{\infty}e^{-x}x^{\alpha-1}dx\)`。`\(\Gamma\)`随机变量的期望为：`\(E[X] = \frac{\alpha}{\lambda}\)`，方差为:`\(Var(X) = \frac{\alpha}{\lambda^2}\)`
+4. 一个随机变量称为参数为`\((\alpha,\lambda)\)`的`\(\Gamma\)`随机变量，如果其密度函数等于`\(f(x) = \frac{\lambda e^{-\lambda x}(\lambda x)^{\alpha-1}}{\Gamma(\alpha)}, x≥0\)`，`\(\Gamma(\alpha)\)`称为`\(\Gamma\)`函数，定义为`\(\Gamma(\alpha) = \int_0^{\infty}e^{-x}x^{\alpha-1}dx\)`。
+    * `\(\Gamma\)`随机变量的期望为：`\(E[X] = \frac{\alpha}{\lambda}\)`，方差为:`\(Var(X) = \frac{\alpha}{\lambda^2}\)`
+    * 当`\(\alpha\)`为一正整数，如`\(\alpha=n\)`，参数为`\((\alpha,\lambda)\)`的`\(\Gamma\)`分布在实践中经常作为某个事件总共发生n次的等待时间的分布而出现。
+    * `\(\lambda=1/2\)`,`\(\alpha=n/2\)`的`\(\Gamma\)`分布(n为一正整数)称为自由度为n的`\(\chi^2\)`分布。在n维空间中试图击中某一靶子，其中各坐标的偏差相互独立且为标准正态分布，则偏差的平方和服从自由度为n的`\(\chi^2\)`分布。
 5. 随机变量称为服从参数为(a,b)的`\(\beta\)`分布，如果其密度函数为`\(f(x) = \frac{1}{B(a,b)}x^{a-1}(1-x)^{b-1},0≤x≤1\)`，常数B(a,b)的定义为:`\(B(a,b) = \int_0^1 x^{a-1}(1-x)^{b-1} dx\)`，`\(\beta\)`随机变量期望:`\(E[X] = \frac{a}{a+b}\)`，方差:`\(Var(X) = \frac{ab}{(a+b)^2(a+b+1)}\)`
 
 ##第六章 随机变量的联合分布
