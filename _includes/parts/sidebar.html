@@ -1,6 +1,16 @@
 <div class="todo-search">
 	<input id="searchkey" class="span10 todo-search-field" type="search" value="" placeholder="搜索...">
-	</div>
+</div>
+<div class="row-fluid" style="background-color: rgb(26, 188, 156);padding: 3px 0 3px 0;">
+<div class="span10">
+    <!-- Feedsky FEED发布代码开始 -->
+    <!-- FEED自动发现标记开始 -->
+    <link title="RSS 2.0" type="application/rss+xml" href="http://feed.feedsky.com/zhangjunhd" rel="alternate" />
+    <!-- FEED自动发现标记结束 -->
+    <a href="http://feed.feedsky.com/zhangjunhd"><img border="0" src="http://img.feedsky.com/images/icon_sub_c1s17.gif" alt="feedsky" vspace="2"  style="margin-bottom:3px" ></a><br />
+    <!-- Feedsky FEED发布代码结束 -->
+</div>
+</div>
 <div class="row-fluid btn-group" style="background-color: rgb(44, 62, 80);padding: 3px 0 3px 0;">
 	{% for item in site.menuitems %}
         {% if item.url == page.url %}
@@ -32,17 +42,3 @@
 <!--revolvermaps-->
 <script type="text/javascript" src="http://ji.revolvermaps.com/2/1.js?i=8ztrq969b75&amp;s=315&amp;m=0&amp;v=false&amp;r=false&amp;b=000000&amp;n=false&amp;c=ff0000" async="async"></script>
 </div>  	
-<div class="row-fluid" style="background-color: rgb(26, 188, 156);padding: 3px 0 3px 0;">
-
-	<div class="span2">
-<!-- Feedsky FEED发布代码开始 -->
-<!-- FEED自动发现标记开始 -->
-<link target="_blank" rel="alternate" href="/rss.xml" type="application/rss+xml" title="RSS 2.0">
-<!-- FEED自动发现标记结束 -->
-<a target="_blank" href="/rss.xml"><img vspace="2" border="0" style="margin-bottom: 3px;" alt="feedsky" src="/assets/img/feed-icon.gif"></a><br>
-</div>
-<div class="span10">
-<a target="_blank" href="http://www.zhuaxia.com/add_channel.php?url=http://zhangjunhd.github.io/rss.xml"><img vspace="2" border="0" style="margin-bottom: 3px;" alt="抓虾" src="/assets/img/icon_zhuaxia.gif"></a><a target="_blank" href="http://www.xianguo.com/subscribe.php?url=http://zhangjunhd.github.io/rss.xml"><img vspace="2" border="0" style="margin-bottom: 3px;" alt="鲜果" src="/assets/img/icon_xianguo.gif"></a><br>
-<a target="_blank" href="http://fusion.google.com/add?feedurl=http://zhangjunhd.github.io/rss.xml"><img vspace="2" border="0" style="margin-bottom: 3px;" alt="google reader" src="/assets/img/icon_google.gif"></a><a target="_blank" href="http://mail.qq.com/cgi-bin/feed?u=http://zhangjunhd.github.io/rss.xml"><img vspace="2" border="0" style="margin-bottom: 3px;" alt="QQ邮箱" src="/assets/img/icon_qq.gif"></a><br>
-</div>
-</div>
