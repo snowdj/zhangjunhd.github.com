@@ -110,7 +110,7 @@ tags: [统计学]
     * `\(P_d=P(|X-N_p|≤d)\)`
     * 1733进一步证明N->∞,`\(\frac{b(m+d)}{b(m)} \thicksim exp(-\frac{2d^2}{N})\)`(13)
     * (9)和(13)结合，`\(b(m+d) \thicksim \frac{2}{\sqrt{2\pi N}}e^{-\frac{2d^2}{N}}\)`(14)
-    * 利用(14)，并近似地以定积分代替和，得`\(P_d=\sum_{i:|m-i|≤d}·b(i) \thicksim \frac{2}{\sqrt{2\pi N}}\sum_{i:|m-i|≤d}e^{-2(\frac{d}{\sqrt{N}})^2} \thicksim \frac{2}{\sqrt{2\pi}}\int_{-\frac{d}{\sqrt{N}}}^{\frac{d}{\sqrt{N}}} e^{-2x^2}\, dx=\frac{1}{\sqrt{2\pi}}\int_{-\frac{d}{\sqrt{N}}}^{\frac{d}{\sqrt{N}}} e^{-2x^2}\, dx\)`(15)
+    * 利用(14)，并近似地以定积分代替和，得`\(P_d=\sum_{i:|m-i|≤d}·b(i) \thicksim \frac{2}{\sqrt{2\pi N}}\sum_{i:|m-i|≤d}e^{-2(\frac{d}{\sqrt{N}})^2} \thicksim \frac{2}{\sqrt{2\pi}}\int_{-\frac{d}{\sqrt{N}}}^{\frac{d}{\sqrt{N}}} e^{-2x^2}\, dx=\frac{1}{\sqrt{2\pi}}\int_{-\frac{d}{\sqrt{N}}}^{\frac{d}{\sqrt{N}}} e^{-\frac{x^2}{2}}\, dx\)`(15)
     * 棣莫弗给出的不是(15)，而是其单边形式`\(\sum_{i:c_1\sqrt{N}≤m-i≤c_2\sqrt{N}}b(i) \thicksim \frac{1}{\sqrt{2\pi}}\int_{2c_1}^{2c_2} e^{-\frac{x^2}{2}}\, dx\)`(16)，这里-∞<c1<c2<∞,c1,c2有界但可与N有关。
     * 给定c>0。在(15)式中令`\(d=c\sqrt{N}\)`，得`\(P_{c\sqrt{N}}=P(|\frac{X}{N}-\frac{1}{2}|≤\frac{C}{\sqrt{N}}) \thicksim \frac{1}{\sqrt{2\pi}}\int_{2c_1}^{2c_2} e^{-\frac{x^2}{2}}\, dx\)`(17)
     * 拉普拉斯在1774年证明了`\(\frac{1}{\sqrt{2\pi}}\int_{2c_1}^{2c_2} e^{-\frac{x^2}{2}}\, dx=1\)`，由此式及(17)可知取c充分大，则对足够大的N，事件`\(|\frac{X}{N}-\frac{1}{2}|≤\frac{C}{\sqrt{N}}\)`的概率可任意接近于1。由于`\(\lim_{n \to \infty}\frac{C}{\sqrt{N}}=0\)`,由此推出对任给`\(\epsilon>0\)`,有`\(\lim_{n \to \infty}P(|\frac{X}{N}-\frac{1}{2}|≤\epsilon)=1\)`，即伯努利大数定律。
@@ -119,10 +119,11 @@ tags: [统计学]
     * (17)说明了：就“用频率估计概率”这个特例而言，观察值的算术平均(在此例即频率)的精度，与观察次数N的平方根`\(\sqrt{N}\)`成比例。棣莫弗也看出了`\(\sqrt{N}\)`这个量的特殊地位，他为此引进“模”(modulu)这个称呼。它被现在常用的概念标准差所取代了。
     * 他对数理统计最大影响是现今以他名字命名的中心极限定理。在他发现40年后，拉普拉斯建立了中心极限定理较一般的形式。
     * 他的出发点始终是：把p作为一个已知值，如何在数值上逼近概率b(N,p,i)和Pd，而不是把p看作未知，如何通过观察值X去对p进行推断。他无法回答：以p记生男孩的概率，现观察了20468个婴儿，发现男婴有10442，问根据这一数据，对p≤1/2的可能性作出评价。200年后波兰统计学家奈曼提出区间估计。
+6. 二项定理的泊松逼近
+    * 泊松在1838年提出`\(\lim_{N \to \infty}b(N,p,k)=e^{-\lambda}\frac{\lambda^k}{k!}, \lambda=\lim_{N \to \infty}N_p\)`(22)
+    * 此公式适用于p很小，N很大而`\(N_p\)`不是很大时。棣莫弗公式则适用于p不太接近0、1的时候。
 
-
-
-
+##第三章 贝叶斯方法
 
 
 

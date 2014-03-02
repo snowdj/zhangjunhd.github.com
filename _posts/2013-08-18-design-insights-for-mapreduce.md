@@ -9,16 +9,7 @@ tags: [MapReduce]
 paper review:[Design Insights for MapReduce from Diverse Production Workloads
 ](http://www.eecs.berkeley.edu/Pubs/TechRpts/2012/EECS-2012-17.pdf)
 
-<!--break-->
 ##1 Introduction
-Our contributions are:
-
-
-* Analysis of seven MapReduce production workloads from five industries totaling over two million jobs,
-
-* Derivation of design and operational insights, and
-
-* Methodology of analysis and the deployment of a public workload repository with workload replay tools.
 ![mr1](/assets/2013-08-18-design-insights-for-mapreduce/mr1.png)
 
 ##2 Background

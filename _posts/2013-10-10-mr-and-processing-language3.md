@@ -3,44 +3,11 @@ layout: post
 title: "MR and Processing Language3"
 description: ""
 category: 云计算
-tags: [MapReduce, Incoop, Mantri, HaLoop, Twister, Nectar, Comet, BSP, Pregel, Dryad]
+tags: [MapReduce, Incoop, HaLoop, Twister, Nectar, Comet, BSP, Pregel, Dryad]
 ---
 {% include JB/setup %}
 
 MapReduce相关文章 review 41-50
-
-<!--break-->
-####41 [Reining in the Outliers in Map-Reduce Clusters using Mantrig][1]
-
-We identify three categories of root causes for outliers that are induced by the interplay between storage, network and structure of Map-Reduce jobs. 
-
-* First, machine characteristics play a key role in the performance of tasks.
-* Second, network characteristics impact the data transfer rates of tasks. 
-* Finally, the specifics of Map-Reduce leads to imbalance in work – partitioning data over a low entropy key space often leads to a skew in the input sizes of tasks.
-
-We present `Mantri`, a system that monitors tasks and culls outliers based on their causes. It uses the following techniques: 
-
-* (i) Restarting outlier tasks cognizant of resource constraints and work imbalances, 
-* (ii) Network-aware placement of tasks,
-* (iii) Protecting output of tasks based on a cost-benefit analysis.
-
-影响job执行的因素：datasize, code, machine, network
-
-将job分三个阶段来统计分析：Extract，Partition，Aggregate
-
-Causes of Outliers
-
-* DataSkew
-* Crossrack Traffic
-* Bad and Busy Machines
-
-Solutions
-
-![1](/assets/2013-10-10-mr-and-processing-language3/mr1.png)
-
-####42 [Design Insights for MapReduce from Diverse Production Workloads][2]
-
-see paper review[Design Insights for MapReduce from Diverse Production Workloads][3]
 
 ####43 [Incoop: MapReduce for Incremental Computations][4]
 
@@ -228,9 +195,6 @@ Our first solution is called `Identical Computation` (IDE), and is fully automat
 
 ![24](/assets/2013-10-10-mr-and-processing-language3/dryadinc3.png)
 
-[1]: http://research.microsoft.com/en-us/UM/people/srikanth/data/mantri_tr.pdf
-[2]: http://www.eecs.berkeley.edu/Pubs/TechRpts/2012/EECS-2012-17.pdf
-[3]: http://zhangjunhd.github.io/2013/08/18/design-insights-for-mapreduce/
 [4]: http://www.cl.cam.ac.uk/~ey204/teaching/ACS/R202_2012_2013/papers/S4_Programming/papers/bhatotia_SOCC_2011.pdf
 [5]: http://homes.cs.washington.edu/~magda/papers/bu-vldb10.pdf
 [6]: http://www.iterativemapreduce.org/hpdc-camera-ready-submission.pdf

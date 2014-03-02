@@ -9,7 +9,6 @@ tags: [python, jquery, MapReduce, Pig, LINQ]
 
 MapReduce, jQuery相关文章 review 31-40
 
-<!--break-->
 ####31 [IPython: A System for Interactive Scientiﬁc Computing][1]
 
 一种交互式shell python。文章中提到了python科学计算的很多project，包括可视化工具。
@@ -20,47 +19,6 @@ MapReduce, jQuery相关文章 review 31-40
 * jQuery Components
 
 ![1](/assets/2013-10-08-mr-and-processing-language2/jquery.png)
-
-####33 [Vision Paper: Towards an Understanding of the Limits of Map-Reduce Computation][3]
-#####33.1 THE MODEL
-For our purposes, a problem consists of:
-
-1. Sets of `inputs` and `outputs`.
-2. A `mapping` from outputs to sets of inputs. The intent is that each output depends on only the set of inputs it is mapped to.
-
-In our context, there are two nonobvious points about this model:
-
-* Inputs and outputs are hypothetical, in the sense that they are all the possible inputs or outputs that might be present in an instance of the problem. Any instance of the problem will have a subset of the inputs. We assume that an output is never made unless at least one of its inputs is present, and in many problems, we only want to make the output if all of its associated inputs are present.
-* We need to limit ourselves to finite sets of inputs and outputs. Thus, a finite domain or domains from which inputs and outputs are constructed is often an integral part of the problem statement, and a “problem” is really a family of problems, one for each choice of finite domain(s).
-
-#####33.2 Mapping Schemas and Replication Rate
-
-For many problems, there is a tradeoff between the number of reducers to which a given input must be sent and the number of inputs that can be sent to one reducer. **The more parallelism we introduce, the greater will be the total cost of computation.**
-
-In our discussion, we shall use the convention that p is the number of reducers used to solve a given problem instance, and q is the maximum number of inputs that can be sent to any one reducer. With a given value of q, to be an assignment of a set of reducers to each input, subject to the constraints that:
-
-1. No more than q inputs are assigned to any one reducer.
-2. For every output, its associated inputs are all assigned to one reducer. We say the reducer covers the output. This reducer need not be unique, and it is, of course, permitted that these same inputs are assigned also to other reducers.
-
-Suppose that for a certain algorithm, the ith reducer is assigned qi ≤ q inputs, and let I be the number of different inputs. Then the `replication rate` r for this algorithm is
-
-`\(r = \sum_{i=1}^p {\frac{q_i}{I}} \)`
-
-We want to derive lower bounds on r, as a function of q, for various problems, thus demonstrating the tradeoff between high parallelism (many small reducers) and overhead (total communication cost – the replication rate).
-
-Observe that, no matter what random set of inputs is present for an instance of the problem, the expected communication is r times the number of inputs actually present, so r is a good measure of the communication cost incurred during an instance of the problem.
-
-The pattern that lets us investigate any problem is, we hope, clear from the analysis of Section 3.
-
-1. Find an upper bound, g(q), on the number of outputs a reducer can cover if q is the number of inputs it is given.
-2. Count the total numbers of inputs |I| and outputs |O|.
-3. Assume there are p reducers, each receiving qi ≤ q inputs and covering g(qi) outputs. Together they cover all the outputs. That is `\(\sum_{i=1}^p {g(q_i)} \geq |O|\)`.
-4. Manipulate the inequality from (3) to get a lower bound on the replication rate, which is `\(\sum_{i=1}^p {\frac{q_i}{I}}\)`.
-5. Hopefully, demonstrate that there are algorithms whose replication rate matches the formula from (4).
-
-####34 [Upper and Lower Bounds on the Cost of a Map-Reduce Computation][4]
-
-![2](/assets/2013-10-08-mr-and-processing-language2/1.png)
 
 ####35 [Building a High-Level Dataﬂow System on top of Map-Reduce: The Pig Experience][5]
 
@@ -123,8 +81,6 @@ see [YSmart][11]
 
 [1]: http://fperez.org/papers/ipython07_pe-gr_cise.pdf
 [2]: http://www.cs.sunysb.edu/~cse336/Slides/L20-jQuery.pdf
-[3]: http://arxiv.org/pdf/1204.1754v1.pdf
-[4]: http://arxiv.org/pdf/1206.4377v1.pdf
 [5]: http://www.vldb.org/pvldb/2/vldb09-1074.pdf
 [6]: http://www.codeproject.com/Tips/590978/LINQ-Tutorial-for-Beginners
 [7]: http://webcourse.cs.technion.ac.il/234319/Spring2009/ho/WCFiles/09%20LINQ.pdf
