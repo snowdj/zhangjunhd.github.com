@@ -153,8 +153,7 @@ class Foo(val s : String) {
 object TestMain extends App {
 
   def getTypeTag[T: ru.TypeTag](obj: T) = ru.typeTag[T] // getTypeTag: [T](obj: T)(implicit evidence$1: reflect.runtime.universe.TypeTag[T])reflect.runtime.universe.TypeTag[T]
-    
-  def getTypeTag[T: ru.TypeTag](obj: T) = ru.typeTag[T] // getTypeTag: [T](obj: T)(implicit evidence$1: reflect.runtime.universe.TypeTag[T])reflect.runtime.universe.TypeTag[T]
+
   val l = List[Foo]()
   val theType = getTypeTag(l).tpe // theType: reflect.runtime.universe.Type = List[Foo]
 

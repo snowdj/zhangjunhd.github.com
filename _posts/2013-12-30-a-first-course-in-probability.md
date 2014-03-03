@@ -132,10 +132,13 @@ tags: [概率]
 
 ##第六章 随机变量的联合分布
 
-1. X和Y的`联合分布函数`定义为:`\(F(x,y) = P\{X≤x,Y≤y\}, -\infty < x,y < \infty\)`。所有关于X,Y的概率都可以由F得到。为了求X和Y各自的分布函数，利用`\(F_X(x) = \lim_{y \to \infty}F(x,y), F_Y(y) = \lim_{x \to \infty}F(x,y)\)`
-    * 若X和Y均为离散型随机变量，则它们的联合分布也是离散的，其联合分布列为:`\(p(i,j) = P\{X=i,Y=j\}\)`，X,Y的各自分布列为`\(P\{X=i\} = \sum_j{p(i,j)}, P\{Y=j\} = \sum_i{p(i,j)}\)`
-    * 随机变量X和Y称为联合连续的，如果存在一个二元函数，称为联合密度函数f(x,y)，使得对任意二维集合C，`\(P\{(X,Y) \in C\} = \int\int_C{f(x,y)dxdy}\)`，从此式可知`\(P\{x<X<x+dx,y<Y<y+dy\} \approx f(x,y)dxdy\)`
+1. X和Y的`联合分布函数`(joint cummulative probability distribution function)定义为:`\(F(x,y) = P\{X≤x,Y≤y\}, -\infty < x,y < \infty\)`。所有关于X,Y的概率都可以由F得到。为了求X和Y各自的分布函数，利用`\(F_X(x) = \lim_{y \to \infty}F(x,y), F_Y(y) = \lim_{x \to \infty}F(x,y)\)`,称为各自的`边缘分布`(marginal distribution)
+    * 若X和Y均为离散型随机变量，则它们的联合分布也是离散的，其`联合分布列`(joint probability mass function)为:`\(p(i,j) = P\{X=i,Y=j\}\)`，X,Y的各自分布列为`\(P\{X=i\} = \sum_j{p(i,j)}, P\{Y=j\} = \sum_i{p(i,j)}\)`
+    * 随机变量X和Y称为联合连续的，如果存在一个二元函数，称为`联合密度函数`(joint probability density function)f(x,y)，使得对任意二维集合C，`\(P\{(X,Y) \in C\} = \int\int_C{f(x,y)dxdy}\)`，从此式可知`\(P\{x<X<x+dx,y<Y<y+dy\} \approx f(x,y)dxdy\)`
     * 若X和Y联合连续，则它们各自都为连续型的，且密度函数分别为：`\(f_X(x) = \int_{-\infty}^\infty{f(x,y)dy}, f_Y(y) = \int_{-\infty}^\infty{f(x,y)dx}\)`
+    * `多项分布`：进行n次独立重复试验，假设每次试验都有r种可能结果，各自概率分别为`\(p_1,p_2,...,p_r, \sum_{i=1}^rp_i=1\)`，令`\(X_i\)`表示n次试验中第i个结果出现的次数，那么`\(P\{X_1=n_1,X_2=n_2,...,X_r=n_r\}=\frac{n!}{n_1!n_2!...n_r!}p_1^{n_1}p_2^{n_2}...p_r^{n_r},\sum_{i=1}^rn_i=n,n_i≥0,i=1,...,r\)`
+        * 当r=2，多项分布退化为二项分布
+        * 考虑掷一颗骰子9次，那么1出现3次，2和3各出现2次，4和5各出现1次，6不出现的概率为`\(\frac{9!}{3!2!2!1!0!}\frac{1}{6}^3\frac{1}{6}^2\frac{1}{6}^2\frac{1}{6}^1\frac{1}{6}^1\frac{1}{6}^0=\frac{9!}{3!2!2!}\frac{1}{6}^9\)`
 2. 随机变量X和Y称为`独立的`，如果对任意集合A和B，有`\(P\{X \in A,Y \in B\} = P\{X \in A\}P\{Y \in B\}\)`
     * 若联合分布函数(或者离散情形下的联合分布列，或者连续情形下的联合密度)可以分解为两个因子，其中一个只依赖于x，另一个只依赖于y，则X和Y独立。
     * 一般情况下，随机变量 `\(X_1,\cdot \cdot \cdot,X_n\)`称为相互独立的，若对一切实数集`\(A_1,\cdot \cdot \cdot,A_n\)`有`\(P\{X_1 \in A_1,\cdot \cdot \cdot,X_n \in A_n\} = P\{X_1 \in A_1\}\cdot \cdot \cdot P\{X_n \in A_n\}\)`

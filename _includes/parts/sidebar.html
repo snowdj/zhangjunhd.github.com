@@ -1,16 +1,6 @@
 <div class="todo-search">
 	<input id="searchkey" class="span10 todo-search-field" type="search" value="" placeholder="搜索...">
 </div>
-<div class="row-fluid" style="background-color: rgb(26, 188, 156);padding: 3px 0 3px 0;">
-<div class="span10">
-    <!-- Feedsky FEED发布代码开始 -->
-    <!-- FEED自动发现标记开始 -->
-    <link title="RSS 2.0" type="application/rss+xml" href="http://feed.feedsky.com/zhangjunhd" rel="alternate" />
-    <!-- FEED自动发现标记结束 -->
-    <a href="http://feed.feedsky.com/zhangjunhd"><img border="0" src="http://img.feedsky.com/images/icon_sub_c1s17.gif" alt="feedsky" vspace="2"  style="margin-bottom:3px" ></a><br />
-    <!-- Feedsky FEED发布代码结束 -->
-</div>
-</div>
 <div class="row-fluid btn-group" style="background-color: rgb(44, 62, 80);padding: 3px 0 3px 0;">
 	{% for item in site.menuitems %}
         {% if item.url == page.url %}
@@ -41,4 +31,12 @@
 <div class="row-fluid btn-group" style="background-color: rgb(44, 62, 80);padding: 3px 0 3px 0;">  
 <!--revolvermaps-->
 <script type="text/javascript" src="http://ji.revolvermaps.com/2/1.js?i=8ztrq969b75&amp;s=315&amp;m=0&amp;v=false&amp;r=false&amp;b=000000&amp;n=false&amp;c=ff0000" async="async"></script>
-</div>  	
+</div>
+<div class="span10">
+    <!-- RSS -->
+    <img src="/xml.png" />Subscribe to this weblog's:</br>
+    <a href="/atom.xml">atom feed</a> or 
+    <a href="/rss.xml">rss feed</a>
+    <br/>
+    <!-- RSS -->
+</div>
