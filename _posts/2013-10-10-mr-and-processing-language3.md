@@ -3,7 +3,7 @@ layout: post
 title: "MR and Processing Language3"
 description: ""
 category: 云计算
-tags: [MapReduce, Incoop, HaLoop, Twister, Nectar, Comet, BSP, Pregel, Dryad]
+tags: [MapReduce, Incoop, HaLoop, Twister, Nectar, Comet, Dryad]
 ---
 {% include JB/setup %}
 
@@ -148,27 +148,6 @@ The normalization phase converts a given DryadLINQ S-query into a sequence of SS
   * Shared scan.
   * Shared shuffling.
 
-####49 [Pregel: A System for Large-Scale Graph Processing][10]
-
-Pregel computations consist of a sequence of iterations, called `supersteps`. During a superstep the framework invokes a user-defined function for each vertex, conceptually in parallel. The function specifies behavior at a single vertex V and a single superstep S. It can read messages sent to V in su- perstep S − 1, send messages to other vertices that will be received at superstep S + 1, and modify the state of V and its outgoing edges. Messages are typically sent along outgoing edges, but a message may be sent to any vertex whose identifier is known.
-
-Algorithm termination is based on every vertex `voting to halt`. In superstep 0, every vertex is in the active state; all active vertices participate in the computation of any given superstep. A vertex deactivates itself by voting to halt. This means that the vertex has no further work to do unless triggered externally, and the Pregel framework will not execute that vertex in subsequent supersteps unless it receives a message. If reactivated by a message, a vertex must explicitly deactivate itself again. The algorithm as a whole terminates when all vertices are simultaneously inactive and there are no messages in transit. This simple state machine is illustrated in Figure 1.
-
-![19](/assets/2013-10-10-mr-and-processing-language3/pregel1.png)
-
-Figure 2 illustrates these concepts using a simple example: given a strongly connected graph where each vertex contains a value, it propagates the largest value to every vertex. In each superstep, any vertex that has learned a larger value from its messages sends it to all its neighbors. When no further vertices change in a superstep, the algorithm terminates.
-
-![20](/assets/2013-10-10-mr-and-processing-language3/pregel2.png)
-
-#####THE C++ API
-
-![21](/assets/2013-10-10-mr-and-processing-language3/pregel3.png)
-
-* `Message Passing.` Vertices communicate directly with one another by sending messages, each of which consists of a message value and the name of the destination vertex.
-* `Combiners.` Sending a message, especially to a vertex on another machine, incurs some overhead. This can be reduced in some cases with help from the user. For example, suppose that Compute() receives integer messages and that only the sum matters, as opposed to the individual values. In that case the system can combine several messages intended for a vertex V into a single message containing their sum, reducing the number of messages that must be transmitted and buffered.
-* `Aggregators.` Pregel aggregators are a mechanism for global communication, monitoring, and data. Each vertex can provide a value to an aggregator in superstep S, the system combines those values using a reduction operator, and the resulting value is made available to all vertices in superstep S + 1.
-* `Topology Mutations.` A clustering algorithm, for example, might replace each cluster with a single vertex, and a minimum spanning tree algorithm might remove all but the tree edges. Just as a user’s Compute() function can send messages, it can also issue requests to add or remove vertices or edges.
-
 ####50 [DryadInc: Reusing work in large-scale computations][11]
 
 #####Introduction
@@ -201,5 +180,4 @@ Our first solution is called `Identical Computation` (IDE), and is fully automat
 [7]: http://research.microsoft.com/pubs/131525/nectar-tr.pdf
 [8]: http://www.vestasys.org/doc/pubs/pldi-00-04-20.pdf
 [9]: http://www.ntu.edu.sg/home/bshe/socc10.pdf
-[10]:http://kowshik.github.io/JPregel/pregel_paper.pdf
 [11]:http://budiu.info/work/hotcloud09.pdf
